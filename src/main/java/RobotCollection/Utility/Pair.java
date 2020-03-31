@@ -1,4 +1,4 @@
-package Utility;
+package RobotCollection.Utility;
 
 /**
  * A class for positions with x,y coordinates
@@ -28,6 +28,11 @@ public class Pair {
     public Pair(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Pair(Pair gridPosition) {
+        this.x = gridPosition.x;
+        this.y = gridPosition.y;
     }
 
     /**

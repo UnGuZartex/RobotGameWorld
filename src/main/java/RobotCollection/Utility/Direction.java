@@ -1,4 +1,4 @@
-package Utility;
+package RobotCollection.Utility;
 
 /**
  * An enum for the different directions a robot can look towards.
@@ -26,6 +26,11 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.RIGHT;
         }
+
+        @Override
+        public Pair moveForward(Pair position) {
+            return new Pair(position.getX(), position.getY()-1);
+        }
     },
     LEFT {
         /**
@@ -46,6 +51,11 @@ public enum Direction {
         @Override
         public Direction turnRight() {
             return Direction.UP;
+        }
+
+        @Override
+        public Pair moveForward(Pair position) {
+            return new Pair(position.getX()-1, position.getY());
         }
     },
     DOWN {
@@ -68,6 +78,11 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.LEFT;
         }
+
+        @Override
+        public Pair moveForward(Pair position) {
+            return new Pair(position.getX(), position.getY()+1);
+        }
     },
     RIGHT {
         /**
@@ -89,6 +104,11 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.DOWN;
         }
+
+        @Override
+        public Pair moveForward(Pair position) {
+            return new Pair(position.getX()+1, position.getY());
+        }
     };
 
     /**
@@ -104,4 +124,12 @@ public enum Direction {
      * @return This direction to the right.
      */
     public abstract Direction turnRight();
+
+    /**
+     * Move forward given this direction
+     *
+     * @param position the position to start from
+     * @return The position to end at
+     */
+    public abstract Pair moveForward(Pair position);
 }
