@@ -9,9 +9,12 @@ import GameWorld.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LevelInitializer implements GameWorldType{
+
+    private LevelLoader levelLoader = new LevelLoader();
 
     private ArrayList<RobotAction> actionList = new ArrayList<>(
             Arrays.asList(
@@ -22,7 +25,7 @@ public class LevelInitializer implements GameWorldType{
     );
 
     private List<LevelPredicate> predicateList = new ArrayList<>(
-            Arrays.asList(
+            Collections.singletonList(
                     new WallInFrontPredicate()
             )
     );
@@ -39,10 +42,7 @@ public class LevelInitializer implements GameWorldType{
 
     @Override
     public GameWorld loadFromFile(File file) {
-        Robot gameWorldRobot = new Robot(1,1, Direction.UP);
-        Level returnGameWorld = getLevel(gameWorldRobot);
-        setCorrectGameWorld(returnGameWorld, gameWorldRobot);
-        return returnGameWorld;
+        return levelLoader.loadLevel();
     }
 
     @Override
