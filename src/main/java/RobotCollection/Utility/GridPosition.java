@@ -5,16 +5,12 @@ package RobotCollection.Utility;
  *
  * @author Alpha-team
  */
-public class Pair {
+public class GridPosition {
 
     /**
-     * Variable referring to the x-coordinate of this position.
+     * Variable referring to the coordinates in the gird.
      */
-    private final int x;
-    /**
-     * Variable referring to the y-coordinate of this position.
-     */
-    private final int y;
+    private final int x, y;
 
     /**
      * Initialise a new position with given x and y coordinates.
@@ -25,14 +21,9 @@ public class Pair {
      * @post The x coordinate of this position is set to the given x.
      * @post The y coordinate of this position is set to the given y.
      */
-    public Pair(int x, int y) {
+    public GridPosition(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public Pair(Pair gridPosition) {
-        this.x = gridPosition.x;
-        this.y = gridPosition.y;
     }
 
     /**

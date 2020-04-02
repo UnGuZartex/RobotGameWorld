@@ -28,8 +28,8 @@ public enum Direction {
         }
 
         @Override
-        public Pair moveForward(Pair position) {
-            return new Pair(position.getX(), position.getY()-1);
+        public GridPosition moveForward(GridPosition position) {
+            return new GridPosition(position.getX(), position.getY()-1);
         }
     },
     LEFT {
@@ -54,8 +54,8 @@ public enum Direction {
         }
 
         @Override
-        public Pair moveForward(Pair position) {
-            return new Pair(position.getX()-1, position.getY());
+        public GridPosition moveForward(GridPosition position) {
+            return new GridPosition(position.getX()-1, position.getY());
         }
     },
     DOWN {
@@ -80,8 +80,8 @@ public enum Direction {
         }
 
         @Override
-        public Pair moveForward(Pair position) {
-            return new Pair(position.getX(), position.getY()+1);
+        public GridPosition moveForward(GridPosition position) {
+            return new GridPosition(position.getX(), position.getY()+1);
         }
     },
     RIGHT {
@@ -106,8 +106,8 @@ public enum Direction {
         }
 
         @Override
-        public Pair moveForward(Pair position) {
-            return new Pair(position.getX()+1, position.getY());
+        public GridPosition moveForward(GridPosition position) {
+            return new GridPosition(position.getX()+1, position.getY());
         }
     };
 
@@ -131,5 +131,5 @@ public enum Direction {
      * @param position the position to start from
      * @return The position to end at
      */
-    public abstract Pair moveForward(Pair position);
+    public abstract GridPosition moveForward(GridPosition position);
 }

@@ -1,10 +1,13 @@
 package GameWorldUtility;
 
+import RobotCollection.Robot.LeftRobotState;
+import RobotCollection.Robot.UpRobotState;
 import RobotCollection.Utility.Direction;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import RobotCollection.Robot.Robot;
 import GameWorld.*;
+import RobotCollection.Utility.GridPosition;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ public class LevelInitializer implements GameWorldType{
 
     @Override
     public GameWorld createNewGameworld() {
-        Robot gameWorldRobot = new Robot(1,1, Direction.LEFT);
+        Robot gameWorldRobot = new Robot(new GridPosition(1,1), new LeftRobotState());
         Level returnGameWorld = getLevel(gameWorldRobot);
         setCorrectGameWorld(returnGameWorld, gameWorldRobot);
         return returnGameWorld;

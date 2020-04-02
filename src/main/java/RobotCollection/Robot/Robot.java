@@ -1,128 +1,123 @@
 package RobotCollection.Robot;
 
-import RobotCollection.Utility.Direction;
-import RobotCollection.Utility.Pair;
+import RobotCollection.Utility.GridPosition;
 
 /**
  * A class representing a robot. This has coordinates and a direction.
  *
- * @invar The robot's coordinates must be at all time valid.
- *        | isValidCoordinates(getX(), getY())
+ * @invar The robot's coordinates must be valid at all time.
+ *        | isValidPosition(getGridPosition())
  *
  * @author Alpha-team
  */
 public class Robot {
 
-    /** 
-     * Variable referring to the gridposition of this robot.
+    /**
+     * Variable referring to the grid position of this robot.
      */
-    private Pair gridPosition;
-
+    private GridPosition gridPosition;
+    /**
+     * Variable referring to the state of this robot.
+     */
+    private RobotState robotState;
 
     /**
-     * Variable referring to the direction of this robot.
+     * Initialise this robot with given grid position and robot state.
+     *
+     * @param gridPosition The grid position for this robot.
+     * @param robotState The robot state for this robot.
+     *
+     * @post The grid position of this robot is set to the given grid position,
+     *       if and only if this given position is valid.
+     * @post The robot state of this robot is set to the given robot state.
+     *
+     * @throws IllegalStateException
+     *         If the given grid position is not a valid position.
      */
-    private Direction direction;
-
-
-    /**
-     * Initialise a new robot with given x and y coordinates, as
-     * well as a direction.
-     *
-     * @param x The initial x coordinate for this robot.
-     * @param y The initial x coordinate for this robot.
-     * @param direction The initial direction for this robot.
-     *
-     * @pre The x and y coordinates must be greater than or
-     *      equal to 0.
-     *
-     * @post The x coordinate of this robot is set to the given x coordinate.
-     * @post The y coordinate of this robot is set to the given y coordinate.
-     * @post The direction of this robot is set to the given direction.
-     * @post The original x coordinate of this robot is set to the given x coordinate.
-     * @post The original y coordinate of this robot is set to the given y coordinate.
-     * @post The original direction of this robot is set to the given direction.
-     */
-    public Robot(int x, int y, Direction direction) {
-        gridPosition = new Pair(x,y);
-        this.direction = direction;
+    public Robot(GridPosition gridPosition, RobotState robotState) throws IllegalStateException {
+        if (isValidPosition(gridPosition)) {
+            this.gridPosition = gridPosition;
+        } else {
+            throw new IllegalArgumentException("Invalid position for a robot!");
+        }
+        this.robotState = robotState;
     }
 
     /**
-     * Get the direction of this robot.
+     * Return the grid position of this robot.
      *
-     * @return The direction of this robot.
+     * @return The grid position of this robot.
      */
-    public Direction getDirection() {
-        return direction;
+    public GridPosition getGridPosition() {
+        return gridPosition;
     }
 
     /**
-     * Get the gridPosition of the robot
-     * @return a copy of the gridposition of the robot
+     * Checks whether or not the given grid position is a valid position for this robot.
+     *
+     * @param gridPosition The grid position to check.
+     *
+     * @return True if and only if both x and y coordinate of the given grid position are
+     *         greater than 0, false otherwise.
      */
-    public Pair getGridPosition() {
-        return new Pair(gridPosition);
+    public static boolean isValidPosition(GridPosition gridPosition) {
+        return gridPosition.getX() >= 0 &&
+               gridPosition.getY() >= 0;
     }
 
     /**
-     * Checks whether or not the given coordinates are valid for a robot.
+     * Get the position forward of this robot.
      *
-     * @param x The x coordinate to check.
-     * @param y The Y coordinate to check.
-     *
-     * @return True if and only if the given coordinates are both greater than 0.
+     * @return The position forward according to the robot state.
      */
-    public static boolean isValidCoordinates(int x, int y) {
-        return x >= 0 && y >= 0;
+    public GridPosition getPositionForward() {
+        return robotState.getPositionForward(gridPosition);
     }
 
     /**
-     * Update the position and the direction of this robot to the new values
-     * @param newPosition new Position of the robot
-     * @param newDirection new Direction of the robot
+     * Turn this robot to the left.
      *
-     * @effect The position and the direction of the robot is changed
-     */
-    public void updatePositionAndDirection(Pair newPosition, Direction newDirection) {
-        gridPosition = newPosition;
-        direction = newDirection;
-    }
-
-    /**
-     * Gets the position of the block in front of the robot
-     * @return position in front of the robot
-     */
-    public Pair getForwardPosition() {
-        return direction.moveForward(gridPosition);
-    }
-
-    /**
-     * Move the robot forwards
-     *
-     * @effect the robots position is changed corresponding its direction
-     */
-    public void moveForward() {
-        updatePositionAndDirection(getForwardPosition(), direction);
-    }
-
-    /**
-     * Turn the robot to the left
-     *
-     * @effect the robots direction is changed to the left of the current direction
+     * @effect The robot state of this robot is turned to the left.
      */
     public void turnLeft() {
-        Direction newDirection = direction.turnLeft();
-        updatePositionAndDirection(gridPosition, newDirection);
+        robotState.turnLeft(this);
     }
 
     /**
-     * Turn the robot to the right
+     * Turn this robot to the right.
      *
-     * @effect the robots direction is changed to the right of the current direction
+     * @effect The robot state of this robot is turned to the right.
      */
     public void turnRight() {
-        Direction newDirection = direction.turnRight();
-        updatePositionAndDirection(gridPosition, newDirection);
+        robotState.turnRight(this);
+    }
+
+    /**
+     * Move this robot one position forward.
+     *
+     * @post The robot position is set one step forward forward if
+     *       this position is a valid position.
+     *
+     * @throws IllegalStateException
+     *         If the robot can't move a step forward.
+     */
+    public void moveForward() throws IllegalStateException {
+        GridPosition newGridPosition = getPositionForward();
+        if (isValidPosition(newGridPosition)) {
+            gridPosition = newGridPosition;
+        } else {
+            throw new IllegalStateException("This robot can't move forward!");
+        }
+    }
+
+    /**
+     * Change the robot state of this robot to the given robot state.
+     *
+     * @param robotState The new robot state for this robot.
+     *
+     * @post The robot state of this robot is set to the given robot.
+     */
+    protected void changeRobotState(RobotState robotState) {
+        this.robotState = robotState;
     }
 }

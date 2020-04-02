@@ -4,10 +4,9 @@ import GameWorld.Cell;
 import GameWorld.CellType;
 import GameWorld.Level;
 import GameWorldAPI.GameWorld.GameWorld;
+import RobotCollection.Robot.LeftRobotState;
 import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Direction;
-
-
+import RobotCollection.Utility.GridPosition;
 
 /**
  * A class to load levels.
@@ -30,7 +29,7 @@ public class LevelLoader {
      * set in the game state.
      */
     public GameWorld loadLevel() {
-        Robot robot = new Robot(1,1, Direction.LEFT);
+        Robot robot = new Robot(new GridPosition(1,1), new LeftRobotState());
         return new Level(robot, cells);
     }
 }
