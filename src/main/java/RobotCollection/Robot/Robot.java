@@ -13,7 +13,7 @@ import RobotCollection.Utility.Pair;
  */
 public class Robot {
 
-    /**
+    /** 
      * Variable referring to the gridposition of this robot.
      */
     private Pair gridPosition;
