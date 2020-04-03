@@ -221,14 +221,17 @@ public class Grid implements HistoryTracked {
         history.add(createSnapshot());
     }
 
+    @Override
     public void undo() {
         history.undo();
     }
 
+    @Override
     public void redo() {
         history.redo();
     }
 
+    @Override
     public void reset() {
         history.reset();
     }

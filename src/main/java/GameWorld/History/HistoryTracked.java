@@ -9,4 +9,10 @@ public interface HistoryTracked {
     void loadSnapshot(Snapshot snapshot);
     
     void backup();
+
+    void undo();
+
+    void redo();
+
+    void reset();
 }

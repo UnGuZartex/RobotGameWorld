@@ -22,6 +22,8 @@ public class Level implements GameWorld, HistoryTracked {
 
     private final GenericHistory history;
 
+    private Result lastResult = Result.SUCCES;
+
     /**
      * Initialise a new level with given robot and direction,
      * as well as the cells for the grid of the level.
@@ -43,15 +45,16 @@ public class Level implements GameWorld, HistoryTracked {
         }
         this.robot = robot;
         this.history = new GenericHistory(this);
+        backup();
     }
 
 
     @Override
     public Result executeAction(Action action) {
-        backup();
         action.execute();
-        return grid.resultingCondition(robot.getGridPosition());
-
+        lastResult = grid.resultingCondition(robot.getGridPosition());
+        backup();
+        return lastResult;
     }
 
     @Override
@@ -71,6 +74,7 @@ public class Level implements GameWorld, HistoryTracked {
         LevelSnapshot memento = (LevelSnapshot) snapshot;
         this.grid = memento.mementoGrid;
         this.robot = memento.mementoRobot;
+        this.lastResult = memento.mementoResult;
     }
 
     @Override
@@ -84,18 +88,21 @@ public class Level implements GameWorld, HistoryTracked {
     public void undo() {
         robot.undo();
         grid.undo();
+        history.undo();
     }
 
     @Override
     public void redo() {
         robot.redo();
         grid.redo();
+        history.undo();
     }
 
     @Override
     public void reset() {
         robot.reset();
         grid.reset();
+        history.undo();
     }
 
     @Override
@@ -105,7 +112,7 @@ public class Level implements GameWorld, HistoryTracked {
 
     @Override
     public String toString() {
-        return robot.toString();
+        return robot.toString() + "Result: " + lastResult;
     }
 
     public boolean robotHasWallInFront() {
@@ -123,12 +130,15 @@ public class Level implements GameWorld, HistoryTracked {
 
         private final Grid mementoGrid;
 
+        private final Result mementoResult;
+
         private final LocalDateTime creationTime;
 
 
         public LevelSnapshot() {
             this.mementoRobot = robot;
             this.mementoGrid = grid;
+            this.mementoResult = lastResult;
             this.creationTime = LocalDateTime.now();
         }
 
