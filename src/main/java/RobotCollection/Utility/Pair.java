@@ -52,4 +52,9 @@ public class Pair {
     public int getY() {
         return  y;
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }
