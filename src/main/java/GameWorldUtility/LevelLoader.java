@@ -29,7 +29,7 @@ public class LevelLoader {
      * Load a level which is hardcoded in this level loader. This level is
      * set in the game state.
      */
-    public GameWorld loadLevel() {
+    public Level loadLevel() {
         Robot robot = new Robot(1,1, Direction.LEFT);
         return new Level(robot, cells);
     }

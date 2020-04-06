@@ -9,6 +9,6 @@ public class WallInFrontPredicate extends LevelPredicate {
 
     @Override
     public boolean evaluate() {
-        return getLevel().robotHasWallInFront();
+        return level.robotHasWallInFront();
     }
 }

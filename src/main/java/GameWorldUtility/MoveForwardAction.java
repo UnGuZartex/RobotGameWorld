@@ -10,6 +10,6 @@ public class MoveForwardAction extends RobotAction {
 
     @Override
     public void execute() {
-        getRobot().moveForward();
+        robot.moveForward();
     }
 }

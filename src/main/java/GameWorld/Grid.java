@@ -1,12 +1,7 @@
 package GameWorld;
 
-import GameWorld.History.GenericHistory;
-import GameWorld.History.HistoryTracked;
 import GameWorldAPI.GameWorld.Result;
-import GameWorldAPI.History.Snapshot;
 import RobotCollection.Utility.Pair;
-
-import java.time.LocalDateTime;
 
 /**
  * A class to keep track of the grid of the game. This is
@@ -17,7 +12,7 @@ import java.time.LocalDateTime;
  *
  * @author Alpha-team
  */
-public class Grid implements HistoryTracked {
+public class Grid {
 
     /**
      * Variable referring to the height of this grid.
@@ -31,27 +26,6 @@ public class Grid implements HistoryTracked {
      * Variable referring to the cells in this grid.
      */
     private Cell[][] cells;
-
-    /**
-     * Variable referring to the history of the grid
-     */
-    private final GenericHistory history;
-
-    /**
-     * Initialise a new grid with given cells.
-     *
-     * @param cells The cells for this Grid.
-     *
-     * @post A new grid is initialised with the given cells and
-     *       the height and width of this grid is set to the the
-     *       dimensions of the given cells.
-     *
-     * @effect Calls constructor with given cells and its dimensions.
-     */
-    public Grid(Cell[][] cells) {
-        this(cells.length, cells[0].length, cells);
-
-    }
 
     /**
      * Initialise a new grid with given height and width.
@@ -68,6 +42,33 @@ public class Grid implements HistoryTracked {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 cells[i][j] = getDefaultCell();
+            }
+        }
+    }
+
+    /**
+     * Initialise a new grid with given cells.
+     *
+     * @param cells The cells for this Grid.
+     *
+     * @post A new grid is initialised with the given cells and
+     *       the height and width of this grid is set to the the
+     *       dimensions of the given cells.
+     *
+     * @effect Calls constructor with given cells and its dimensions.
+     */
+    public Grid(Cell[][] cells) {
+        this(cells.length, cells[0].length, cells);
+    }
+
+    public Grid(Grid grid) {
+        width = grid.width;
+        height = grid.height;
+        cells = new Cell[width][height];
+
+        for (int x = 0; x < grid.cells.length; x++) {
+            for (int y = 0; y < grid.cells[x].length; y++) {
+                cells[x][y] = new Cell(grid.cells[x][y]);
             }
         }
     }
@@ -95,7 +96,6 @@ public class Grid implements HistoryTracked {
         this.height = height;
         this.width = width;
         this.cells = cells;
-        this.history = new GenericHistory(this);
     }
 
     /**
@@ -196,72 +196,10 @@ public class Grid implements HistoryTracked {
             if (hasWon(currentPosition)) {
                 return Result.END;
             }
-            return Result.SUCCES;
+            return Result.SUCCESS;
         }
         else {
             return Result.FAILURE;
-        }
-    }
-
-    public Snapshot createSnapshot() {
-        GridSnapshot toReturn = new GridSnapshot();
-        System.out.println("Creating new Snapshot: " + toReturn.getName() + "@" + toReturn.getSnapshotDate());
-        return toReturn;
-    }
-
-    public void loadSnapshot(Snapshot snapshot) {
-        GridSnapshot gridSnapshot = (GridSnapshot) snapshot;
-        this.cells = gridSnapshot.mementoCells;
-        this.height = gridSnapshot.mementoHeight;
-        this.width = gridSnapshot.mementoWidth;
-    }
-
-    @Override
-    public void backup() {
-        history.add(createSnapshot());
-    }
-
-    @Override
-    public void undo() {
-        history.undo();
-    }
-
-    @Override
-    public void redo() {
-        history.redo();
-    }
-
-    @Override
-    public void reset() {
-        history.reset();
-    }
-
-    private class GridSnapshot implements Snapshot {
-
-        private final int mementoHeight;
-
-        private final int mementoWidth;
-
-        private final Cell[][] mementoCells;
-
-        private final LocalDateTime creationTime;
-
-        public GridSnapshot() {
-            this.mementoHeight = height;
-            this.mementoWidth = width;
-            this.mementoCells = cells.clone();
-            this.creationTime = LocalDateTime.now();
-        }
-
-
-        @Override
-        public String getName() {
-            return "Height: " + mementoHeight + " Width: " + mementoWidth + " Cells: " + mementoCells;
-        }
-
-        @Override
-        public LocalDateTime getSnapshotDate() {
-            return creationTime;
         }
     }
 }

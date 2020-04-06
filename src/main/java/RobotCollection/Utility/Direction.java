@@ -1,7 +1,7 @@
 package RobotCollection.Utility;
 
 /**
- * An enum for the different directions a robot can look towards.
+ * An enum for managing the different directions a robot can look towards.
  *
  * @author Alpha-team
  */
@@ -27,8 +27,15 @@ public enum Direction {
             return Direction.RIGHT;
         }
 
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
         @Override
-        public Pair moveForward(Pair position) {
+        public Pair getForwardPosition(Pair position) {
             return new Pair(position.getX(), position.getY()-1);
         }
     },
@@ -53,8 +60,15 @@ public enum Direction {
             return Direction.UP;
         }
 
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
         @Override
-        public Pair moveForward(Pair position) {
+        public Pair getForwardPosition(Pair position) {
             return new Pair(position.getX()-1, position.getY());
         }
     },
@@ -79,8 +93,15 @@ public enum Direction {
             return Direction.LEFT;
         }
 
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
         @Override
-        public Pair moveForward(Pair position) {
+        public Pair getForwardPosition(Pair position) {
             return new Pair(position.getX(), position.getY()+1);
         }
     },
@@ -105,8 +126,15 @@ public enum Direction {
             return Direction.DOWN;
         }
 
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
         @Override
-        public Pair moveForward(Pair position) {
+        public Pair getForwardPosition(Pair position) {
             return new Pair(position.getX()+1, position.getY());
         }
     };
@@ -126,10 +154,11 @@ public enum Direction {
     public abstract Direction turnRight();
 
     /**
-     * Move forward given this direction
+     * Get the position from moving one tile forward in the
+     * current direction.
      *
      * @param position the position to start from
      * @return The position to end at
      */
-    public abstract Pair moveForward(Pair position);
+    public abstract Pair getForwardPosition(Pair position);
 }
