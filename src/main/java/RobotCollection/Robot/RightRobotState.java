@@ -10,6 +10,16 @@ import RobotCollection.Utility.GridPosition;
 public class RightRobotState implements RobotState {
 
     /**
+     * Get the name of this robot state.
+     *
+     * @return The string "RIGHT"
+     */
+    @Override
+    public String getName() {
+        return "RIGHT";
+    }
+
+    /**
      * Get the grid position a step forward from the given grid position.
      *
      * @param gridPosition The grid position one step forward.
@@ -23,26 +33,22 @@ public class RightRobotState implements RobotState {
     }
 
     /**
-     * Turn the given robot to the left.
+     * Get the state to the left of this state.
      *
-     * @param robot The robot to turn to the left.
-     *
-     * @effect Changes the robot state of the given robot to the up state.
+     * @return The up robot state.
      */
     @Override
-    public void turnLeft(Robot robot) {
-        robot.changeRobotState(new UpRobotState());
+    public RobotState getLeftState() {
+        return new UpRobotState();
     }
 
     /**
-     * Turn the given robot to the right.
+     * Get the state to the right of this state.
      *
-     * @param robot The robot to turn to the right.
-     *
-     * @effect Changes the robot state of the given robot to the down state.
+     * @return The down robot state.
      */
     @Override
-    public void turnRight(Robot robot) {
-        robot.changeRobotState(new DownRobotState());
+    public RobotState getRightState() {
+        return new DownRobotState();
     }
 }

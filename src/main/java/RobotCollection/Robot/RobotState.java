@@ -10,6 +10,13 @@ import RobotCollection.Utility.GridPosition;
 public interface RobotState {
 
     /**
+     * Get the name of this robot state.
+     *
+     * @return The name of this robot state.
+     */
+    String getName();
+
+    /**
      * Get the grid position a step forward from the given grid position.
      *
      * @param gridPosition The grid position one step forward.
@@ -19,20 +26,16 @@ public interface RobotState {
     GridPosition getPositionForward(GridPosition gridPosition);
 
     /**
-     * Turn the given robot to the left.
+     * Get the state to the left of this state.
      *
-     * @param robot The robot to turn to the left.
-     *
-     * @effect Changes the state of the robot to the correct state.
+     * @return The state to the left of this robot state.
      */
-    void turnLeft(Robot robot);
+    RobotState getLeftState();
 
     /**
-     * Turn the given robot to the right.
+     * Get the state to the right of this state.
      *
-     * @param robot The robot to turn to the right.
-     *
-     * @effect Changes the state of the robot to the correct state.
+     * @return The state to the right of this robot state.
      */
-    void turnRight(Robot robot);
+    RobotState getRightState();
 }

@@ -31,10 +31,10 @@ public class Robot {
      *       if and only if this given position is valid.
      * @post The robot state of this robot is set to the given robot state.
      *
-     * @throws IllegalStateException
+     * @throws IllegalArgumentException
      *         If the given grid position is not a valid position.
      */
-    public Robot(GridPosition gridPosition, RobotState robotState) throws IllegalStateException {
+    public Robot(GridPosition gridPosition, RobotState robotState) throws IllegalArgumentException {
         if (isValidPosition(gridPosition)) {
             this.gridPosition = gridPosition;
         } else {
@@ -50,6 +50,15 @@ public class Robot {
      */
     public GridPosition getGridPosition() {
         return gridPosition;
+    }
+
+    /**
+     * Return the direction this robot is directed to.
+     *
+     * @return The name of the robot state of this robot.
+     */
+    public String getDirection() {
+        return robotState.getName();
     }
 
     /**
@@ -77,19 +86,19 @@ public class Robot {
     /**
      * Turn this robot to the left.
      *
-     * @effect The robot state of this robot is turned to the left.
+     * @post The robot state is set to the state to the left of this robot's state.
      */
     public void turnLeft() {
-        robotState.turnLeft(this);
+        robotState = robotState.getLeftState();
     }
 
     /**
      * Turn this robot to the right.
      *
-     * @effect The robot state of this robot is turned to the right.
+     * @post The robot state is set to the state to the right of this robot's state.
      */
     public void turnRight() {
-        robotState.turnRight(this);
+        robotState = robotState.getRightState();
     }
 
     /**
@@ -108,16 +117,5 @@ public class Robot {
         } else {
             throw new IllegalStateException("This robot can't move forward!");
         }
-    }
-
-    /**
-     * Change the robot state of this robot to the given robot state.
-     *
-     * @param robotState The new robot state for this robot.
-     *
-     * @post The robot state of this robot is set to the given robot.
-     */
-    protected void changeRobotState(RobotState robotState) {
-        this.robotState = robotState;
     }
 }
