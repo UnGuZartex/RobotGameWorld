@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class LevelInitializer implements GameWorldType{
+public class LevelInitializer implements GameWorldType {
 
     private LevelLoader levelLoader = new LevelLoader();
 

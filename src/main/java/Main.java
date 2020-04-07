@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         GameWorldType initter = new LevelInitializer();
-        GameWorld gameWorld = initter.createNewGameworld();
+        GameWorld gameWorld = initter.createNewGameWorld();
         List<Action> actions = initter.getAllActions();
         System.out.println(gameWorld);
 

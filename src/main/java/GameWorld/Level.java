@@ -2,9 +2,11 @@ package GameWorld;
 
 import GameWorld.History.GenericHistory;
 import GameWorld.History.HistoryTracked;
+import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
+import GameWorldAPI.Images.ImageLibrary;
 import RobotCollection.Robot.Robot;
 
 import java.awt.Graphics;
@@ -19,10 +21,9 @@ public class Level implements GameWorld, HistoryTracked {
      * Variable referring to the grid in this level.
      */
     private Grid grid;
-
     private final GenericHistory history;
-
-    private Result lastResult = Result.SUCCES;
+    private Result lastResult = Result.SUCCESS;
+    private LevelPainter levelPainter;
 
     /**
      * Initialise a new level with given robot and direction,
@@ -38,6 +39,9 @@ public class Level implements GameWorld, HistoryTracked {
      * @throws IllegalArgumentException
      *         When the given robot position is an invalid position in the cells.
      */
+    /**
+     * TODO library
+     */
     public Level(Robot robot, Cell[][] gridCells) throws IllegalArgumentException {
         this.grid = new Grid(gridCells);
         if (!grid.isValidRobotPositionInCells(robot.getGridPosition())) {
@@ -51,6 +55,7 @@ public class Level implements GameWorld, HistoryTracked {
 
     @Override
     public Result executeAction(Action action) {
+        // TODO robot set OR level in robotaction instead of robot
         action.execute();
         lastResult = grid.resultingCondition(robot.getGridPosition());
         backup();
@@ -80,34 +85,26 @@ public class Level implements GameWorld, HistoryTracked {
     @Override
     public void backup() {
         history.add(createSnapshot());
-        robot.backup();
-        grid.backup();
     }
 
     @Override
     public void undo() {
-        robot.undo();
-        grid.undo();
         history.undo();
     }
 
     @Override
     public void redo() {
-        robot.redo();
-        grid.redo();
-        history.undo();
+        history.redo();
     }
 
     @Override
     public void reset() {
-        robot.reset();
-        grid.reset();
-        history.undo();
+        history.reset();
     }
 
     @Override
-    public void paint(Graphics graphics) {
-
+    public void paint(Graphics g) {
+        levelPainter.paint(g, grid, robot);
     }
 
     @Override
@@ -134,14 +131,12 @@ public class Level implements GameWorld, HistoryTracked {
 
         private final LocalDateTime creationTime;
 
-
         public LevelSnapshot() {
-            this.mementoRobot = robot;
-            this.mementoGrid = grid;
+            this.mementoRobot = new Robot(robot);
+            this.mementoGrid = new Grid(grid);
             this.mementoResult = lastResult;
             this.creationTime = LocalDateTime.now();
         }
-
 
         @Override
         public String getName() {
