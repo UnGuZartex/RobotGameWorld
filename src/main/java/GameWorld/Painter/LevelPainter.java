@@ -3,14 +3,14 @@ package GameWorld.Painter;
 import GameWorld.Grid;
 import GameWorldAPI.Images.ImageLibrary;
 import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Pair;
+import RobotCollection.Utility.GridPosition;
 
 import java.awt.*;
 
 public class LevelPainter {
 
     private final ImageLibrary library;
-    private Pair gridSize;
+    private GridPosition gridSize;
     private int cellSize;
     private int gridStartingPointX;
     private int gridStartingPointY;
@@ -20,7 +20,7 @@ public class LevelPainter {
         this.library = library;
     }
 
-    public void calculateGridProperties(Pair startingPosition, Pair visualSize, Pair gridSize) {
+    public void calculateGridProperties(GridPosition startingPosition, GridPosition visualSize, GridPosition gridSize) {
         this.gridSize = gridSize;
         cellSize = Math.min((visualSize.getX() - minGridDelta) / gridSize.getX(), (visualSize.getY() - minGridDelta) / gridSize.getY());
         gridStartingPointX = startingPosition.getX() + (visualSize.getX() - (cellSize * gridSize.getX())) / 2;
@@ -39,7 +39,7 @@ public class LevelPainter {
 
         for (int x = 0; x < gridSize.getX(); x++) {
             for (int y = 0; y < gridSize.getY(); y++) {
-                g.drawImage(library.getImage(grid.getCellAt(new Pair(x, y)).getCellType().name()),
+                g.drawImage(library.getImage(grid.getCellAt(new GridPosition(x, y)).getCellType().name()),
                         gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize, null);
                 g.drawRect(gridStartingPointX + x * cellSize, gridStartingPointY + y * cellSize, cellSize, cellSize);
             }
@@ -49,7 +49,7 @@ public class LevelPainter {
     }
 
     private void drawRobot(Graphics g, Robot robot) {
-        Pair robotPosition = robot.getGridPosition();
+        GridPosition robotPosition = robot.getGridPosition();
         g.drawImage(library.getImage("robot" + robot.getDirection().name()),
                 gridStartingPointX + robotPosition.getX() * cellSize, gridStartingPointY +
                         robotPosition.getY() * cellSize, cellSize, cellSize, null);

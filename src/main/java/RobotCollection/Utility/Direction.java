@@ -101,7 +101,7 @@ public enum Direction {
          * @return The position to end at
          */
         @Override
-        public Pair getForwardPosition(GridPosition position) {
+        public GridPosition getForwardPosition(GridPosition position) {
             return new GridPosition(position.getX(), position.getY()+1);
         }
     },
