@@ -1,6 +1,12 @@
 package RobotCollection.Robot;
 
 import RobotCollection.Utility.GridPosition;
+import GameWorld.History.GenericHistory;
+import GameWorld.History.HistoryTracked;
+import GameWorldAPI.History.Snapshot;
+import RobotCollection.Utility.Direction;
+
+import java.time.LocalDateTime;
 
 /**
  * A class representing a robot. This has coordinates and a direction.
@@ -10,7 +16,7 @@ import RobotCollection.Utility.GridPosition;
  *
  * @author Alpha-team
  */
-public class Robot {
+public class Robot implements HistoryTracked {
 
     /**
      * Variable referring to the grid position of this robot.
@@ -19,13 +25,19 @@ public class Robot {
     /**
      * Variable referring to the state of this robot.
      */
-    private RobotState robotState;
+    private Direction direction;
+
+    /**
+     * History of the robot
+     */
+    private GenericHistory history;
+
 
     /**
      * Initialise this robot with given grid position and robot state.
      *
      * @param gridPosition The grid position for this robot.
-     * @param robotState The robot state for this robot.
+     * @param direction The direction for this robot.
      *
      * @post The grid position of this robot is set to the given grid position,
      *       if and only if this given position is valid.
@@ -34,13 +46,14 @@ public class Robot {
      * @throws IllegalArgumentException
      *         If the given grid position is not a valid position.
      */
-    public Robot(GridPosition gridPosition, RobotState robotState) throws IllegalArgumentException {
+    public Robot(GridPosition gridPosition, Direction direction) throws IllegalArgumentException {
         if (isValidPosition(gridPosition)) {
             this.gridPosition = gridPosition;
         } else {
             throw new IllegalArgumentException("Invalid position for a robot!");
         }
-        this.robotState = robotState;
+        this.direction = direction;
+        this.history = new GenericHistory(this);
     }
 
     /**
@@ -57,8 +70,8 @@ public class Robot {
      *
      * @return The name of the robot state of this robot.
      */
-    public String getDirection() {
-        return robotState.getName();
+    public Direction getDirection() {
+        return direction;
     }
 
     /**
@@ -80,7 +93,7 @@ public class Robot {
      * @return The position forward according to the robot state.
      */
     public GridPosition getPositionForward() {
-        return robotState.getPositionForward(gridPosition);
+        return direction.moveForward(gridPosition);
     }
 
     /**
@@ -89,7 +102,7 @@ public class Robot {
      * @post The robot state is set to the state to the left of this robot's state.
      */
     public void turnLeft() {
-        robotState = robotState.getLeftState();
+        direction = direction.turnLeft();
     }
 
     /**
@@ -98,7 +111,7 @@ public class Robot {
      * @post The robot state is set to the state to the right of this robot's state.
      */
     public void turnRight() {
-        robotState = robotState.getRightState();
+        direction = direction.turnRight();
     }
 
     /**
@@ -116,6 +129,67 @@ public class Robot {
             gridPosition = newGridPosition;
         } else {
             throw new IllegalStateException("This robot can't move forward!");
+        }
+    }
+
+    @Override
+    public Snapshot createSnapshot() {
+        RobotSnapshot toReturn = new RobotSnapshot();
+        System.out.println("Creating new Snapshot: " + toReturn.getName() + "  @" + toReturn.getSnapshotDate());
+        return toReturn;
+    }
+
+    @Override
+    public void loadSnapshot(Snapshot snapshot) {
+        RobotSnapshot robotSnapshot = (RobotSnapshot) snapshot;
+        this.direction = robotSnapshot.mementoDirection;
+        this.gridPosition = robotSnapshot.mementoGridPosition;
+    }
+
+    @Override
+    public void backup() {
+        history.add(createSnapshot());
+    }
+
+    @Override
+    public void undo() {
+        history.undo();
+    }
+
+    @Override
+    public void redo() {
+        history.redo();
+    }
+
+    @Override
+    public void reset() {
+        history.reset();
+    }
+
+    @Override
+    public String toString() {
+        return "Direction: " + direction + "  Position: "  + gridPosition;
+    }
+
+    private class RobotSnapshot implements Snapshot {
+        private final Direction mementoDirection;
+        private final GridPosition mementoGridPosition;
+        private final LocalDateTime creationTime;
+
+        private RobotSnapshot() {
+            this.mementoDirection = direction;
+            this.mementoGridPosition = gridPosition;
+            this.creationTime = LocalDateTime.now();
+        }
+
+        @Override
+        public String getName() {
+            return "Direction: " + mementoDirection + "  Position: " + mementoGridPosition;
+        }
+
+        @Override
+        public LocalDateTime getSnapshotDate() {
+            return creationTime;
         }
     }
 }
