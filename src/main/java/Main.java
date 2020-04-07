@@ -13,8 +13,8 @@ public class Main {
         GameWorldType initter = new LevelInitializer();
         GameWorld gameWorld = initter.createNewGameWorld();
         List<Action> actions = initter.getAllActions();
-
         System.out.println(gameWorld);
+
         System.out.println(gameWorld.executeAction(actions.get(1)));
         System.out.println(gameWorld);
         gameWorld.undo();

@@ -1,7 +1,8 @@
 package GameWorld;
 
 import GameWorldAPI.GameWorld.Result;
-import RobotCollection.Utility.Pair;
+import RobotCollection.Utility.GridPosition;
+import GameWorldAPI.History.Snapshot;
 
 /**
  * A class to keep track of the grid of the game. This is
@@ -143,7 +144,7 @@ public class Grid {
      *
      * @return The cell in this grid at position [x,y] coordinate.
      */
-    public Cell getCellAt(Pair position) {
+    public Cell getCellAt(GridPosition position) {
         return cells[position.getX()][position.getY()];
     }
 
@@ -175,7 +176,7 @@ public class Grid {
      *         coordinates correspond to a cell in the given cells which has
      *         a walkable CellType.
      */
-    public boolean isValidRobotPositionInCells(Pair position) {
+    public boolean isValidRobotPositionInCells(GridPosition position) {
         return position.getX() < cells.length && position.getX() >= 0 &&
                 position.getY() < cells[0].length && position.getY() >= 0 &&
                 cells[position.getX()][position.getY()].getCellType().canWalkOn();
@@ -187,11 +188,11 @@ public class Grid {
      * @return True if and only if the robot's position corresponds
      *         to a cell which with CellType which is win.
      */
-    public boolean hasWon(Pair position) {
+    public boolean hasWon(GridPosition position) {
         return getCellAt(position).getCellType().isWin();
     }
 
-    public Result resultingCondition(Pair currentPosition) {
+    public Result resultingCondition(GridPosition currentPosition) {
         if (isValidRobotPositionInCells(currentPosition)) {
             if (hasWon(currentPosition)) {
                 return Result.END;
