@@ -1,9 +1,6 @@
 package RobotCollection.Robot;
 
 import RobotCollection.Utility.GridPosition;
-import GameWorld.History.GenericHistory;
-import GameWorld.History.HistoryTracked;
-import GameWorldAPI.History.Snapshot;
 import RobotCollection.Utility.Direction;
 
 /**
@@ -24,11 +21,6 @@ public class Robot {
      * Variable referring to the state of this robot.
      */
     private Direction direction;
-
-    /**
-     * History of the robot
-     */
-    private GenericHistory history;
 
 
     /**
@@ -83,13 +75,6 @@ public class Robot {
                gridPosition.getY() >= 0;
     }
 
-    /**
-     * @effect The position, and the direction of the robot is changed
-     */
-    public void updatePositionAndDirection(GridPosition newPosition, Direction newDirection) {
-        gridPosition = newPosition;
-        direction = newDirection;
-    }
 
     /**
      * Gets the position of the block in front of the robot
@@ -122,11 +107,8 @@ public class Robot {
      *
      * @post The robot position is set one step forward forward if
      *       this position is a valid position.
-     *
-     * @throws IllegalStateException
-     *         If the robot can't move a step forward.
      */
-    public void moveForward() throws IllegalStateException {
-        gridPosition = getForwardPosition();
+    public void moveForward() {
+        this.gridPosition = getForwardPosition();
     }
 }

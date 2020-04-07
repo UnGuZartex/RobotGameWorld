@@ -11,7 +11,7 @@ public abstract class RobotAction implements Action {
 
     public abstract void execute();
 
-    protected void setRobot(Robot robot) {
+    public void setRobot(Robot robot) {
         this.robot = robot;
     }
 }

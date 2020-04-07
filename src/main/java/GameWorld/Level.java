@@ -7,6 +7,7 @@ import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
 import GameWorldAPI.Images.ImageLibrary;
+import GameWorldUtility.RobotAction;
 import RobotCollection.Robot.Robot;
 
 import java.awt.Graphics;
@@ -49,16 +50,16 @@ public class Level implements GameWorld, HistoryTracked {
         }
         this.robot = robot;
         this.history = new GenericHistory(this);
-        backup();
     }
 
 
     @Override
     public Result executeAction(Action action) {
-        // TODO robot set OR level in robotaction instead of robot
+        backup();
+        RobotAction robotAction = (RobotAction) action;
+        robotAction.setRobot(this.robot);
         action.execute();
         lastResult = grid.resultingCondition(robot.getGridPosition());
-        backup();
         return lastResult;
     }
 
@@ -109,7 +110,7 @@ public class Level implements GameWorld, HistoryTracked {
 
     @Override
     public String toString() {
-        return robot.toString() + "Result: " + lastResult;
+        return robot.getGridPosition() + " " + robot.getDirection() + "Result: " + lastResult;
     }
 
     public boolean robotHasWallInFront() {
@@ -140,7 +141,7 @@ public class Level implements GameWorld, HistoryTracked {
 
         @Override
         public String getName() {
-            return "Robot: " + robot + " Grid: " + grid;
+            return "Robot: " + robot.getGridPosition() + robot.getDirection() + " Grid: " + grid;
         }
 
         @Override
