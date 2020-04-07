@@ -49,8 +49,8 @@ public class LevelInitializer implements GameWorldType {
     }
 
     @Override
-    public GameWorld createNewGameworld() {
-        Robot gameWorldRobot = new Robot(new GridPosition(1,1), new LeftRobotState());
+    public GameWorld createNewGameWorld() {
+        Robot gameWorldRobot = new Robot(new GridPosition(1,1), Direction.LEFT);
         Level returnGameWorld = getLevel(gameWorldRobot);
         setCorrectGameWorld(returnGameWorld, gameWorldRobot);
         return returnGameWorld;

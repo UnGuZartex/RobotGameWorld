@@ -26,6 +26,11 @@ public class GridPosition {
         this.y = y;
     }
 
+    public GridPosition(GridPosition gridPosition) {
+        this.x = gridPosition.x;
+        this.y = gridPosition.y;
+    }
+
     /**
      * Get the x-coordinate of this position.
      *

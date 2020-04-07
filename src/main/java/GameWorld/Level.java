@@ -114,7 +114,7 @@ public class Level implements GameWorld, HistoryTracked {
 
     public boolean robotHasWallInFront() {
         try {
-            return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
+            return grid.getCellAt(robot.getForwardPosition()).getCellType() == CellType.WALL;
         }
         catch (IndexOutOfBoundsException e) {
             return true;

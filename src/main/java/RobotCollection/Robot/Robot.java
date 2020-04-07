@@ -44,12 +44,12 @@ public class Robot {
      *         If the given grid position is not a valid position.
      */
     public Robot(GridPosition gridPosition, Direction direction) {
-        gridPosition = position;
+        this.gridPosition = gridPosition;
         this.direction = direction;
     }
 
     public Robot(Robot robot) {
-        gridPosition = new Pair(robot.getGridPosition());
+        gridPosition = new GridPosition(robot.getGridPosition());
         direction = robot.getDirection();
     }
 
@@ -86,7 +86,7 @@ public class Robot {
     /**
      * @effect The position, and the direction of the robot is changed
      */
-    public void updatePositionAndDirection(Pair newPosition, Direction newDirection) {
+    public void updatePositionAndDirection(GridPosition newPosition, Direction newDirection) {
         gridPosition = newPosition;
         direction = newDirection;
     }
@@ -127,11 +127,6 @@ public class Robot {
      *         If the robot can't move a step forward.
      */
     public void moveForward() throws IllegalStateException {
-        GridPosition newGridPosition = getPositionForward();
-        if (isValidPosition(newGridPosition)) {
-            gridPosition = newGridPosition;
-        } else {
-            throw new IllegalStateException("This robot can't move forward!");
-        }
+        gridPosition = getForwardPosition();
     }
 }
