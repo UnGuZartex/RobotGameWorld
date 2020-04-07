@@ -57,7 +57,6 @@ class RobotTest {
     @Test
     void RobotGridPositionRobotState_InvalidGridPosition() {
         assertFalse(Robot.isValidPosition(new GridPosition(-1,-1)));
-        assertThrows(IllegalArgumentException.class, () -> { new Robot(new GridPosition(-1,-1), Direction.RIGHT); });
     }
 
     @Test
@@ -70,10 +69,10 @@ class RobotTest {
 
     @Test
     void getDirection() {
-        assertEquals("UP", robotUp.getDirection());
-        assertEquals("DOWN", robotDown.getDirection());
-        assertEquals("LEFT", robotLeft.getDirection());
-        assertEquals("RIGHT", robotRight.getDirection());
+        assertEquals(Direction.UP, robotUp.getDirection());
+        assertEquals(Direction.DOWN, robotDown.getDirection());
+        assertEquals(Direction.LEFT, robotLeft.getDirection());
+        assertEquals(Direction.RIGHT, robotRight.getDirection());
     }
 
     @Test
@@ -117,65 +116,64 @@ class RobotTest {
 
     @Test
     void turnLeft_up() {
-        assertEquals("UP", robotUp.getDirection());
+        assertEquals(Direction.UP, robotUp.getDirection());
         robotUp.turnLeft();
-        assertEquals("LEFT", robotUp.getDirection());
+        assertEquals(Direction.LEFT, robotUp.getDirection());
     }
 
     @Test
     void turnLeft_down() {
-        assertEquals("DOWN", robotDown.getDirection());
+        assertEquals(Direction.DOWN, robotDown.getDirection());
         robotDown.turnLeft();
-        assertEquals("RIGHT", robotDown.getDirection());
+        assertEquals(Direction.RIGHT, robotDown.getDirection());
     }
 
     @Test
     void turnLeft_left() {
-        assertEquals("LEFT", robotLeft.getDirection());
+        assertEquals(Direction.LEFT, robotLeft.getDirection());
         robotLeft.turnLeft();
-        assertEquals("DOWN", robotLeft.getDirection());
+        assertEquals(Direction.DOWN, robotLeft.getDirection());
     }
 
     @Test
     void turnLeft_right() {
-        assertEquals("RIGHT", robotRight.getDirection());
+        assertEquals(Direction.RIGHT, robotRight.getDirection());
         robotRight.turnLeft();
-        assertEquals("UP", robotRight.getDirection());
+        assertEquals(Direction.UP, robotRight.getDirection());
     }
 
     @Test
     void turnRight_up() {
-        assertEquals("UP", robotUp.getDirection());
+        assertEquals(Direction.UP, robotUp.getDirection());
         robotUp.turnRight();
-        assertEquals("RIGHT", robotUp.getDirection());
+        assertEquals(Direction.RIGHT, robotUp.getDirection());
     }
 
     @Test
     void turnRight_down() {
-        assertEquals("DOWN", robotDown.getDirection());
+        assertEquals(Direction.DOWN, robotDown.getDirection());
         robotDown.turnRight();
-        assertEquals("LEFT", robotDown.getDirection());
+        assertEquals(Direction.LEFT, robotDown.getDirection());
     }
 
     @Test
     void turnRight_left() {
-        assertEquals("LEFT", robotLeft.getDirection());
+        assertEquals(Direction.LEFT, robotLeft.getDirection());
         robotLeft.turnRight();
-        assertEquals("UP", robotLeft.getDirection());
+        assertEquals(Direction.UP, robotLeft.getDirection());
     }
 
     @Test
     void turnRight_right() {
-        assertEquals("RIGHT", robotRight.getDirection());
+        assertEquals(Direction.RIGHT, robotRight.getDirection());
         robotRight.turnRight();
-        assertEquals("DOWN", robotRight.getDirection());
+        assertEquals(Direction.DOWN, robotRight.getDirection());
     }
 
     @Test
     void moveForward_canNotMoveForward() {
         Robot robot = new Robot(new GridPosition(0,5), Direction.LEFT);
         assertFalse(Robot.isValidPosition(robot.getForwardPosition()));
-        assertThrows(IllegalStateException.class, robot::moveForward);
     }
 
     @Test
