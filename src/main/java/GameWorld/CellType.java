@@ -24,11 +24,11 @@ public enum CellType {
      * Variable referring to whether or not there can be walked on
      * this CellType.
      */
-    private boolean canWalkOn;
+    private final boolean canWalkOn;
     /**
      * Variable checking whether or not this CellType is winning.
      */
-    private boolean isWin;
+    private final boolean isWin;
 
     /**
      * Initialise a new CellType with values whether there can be walked

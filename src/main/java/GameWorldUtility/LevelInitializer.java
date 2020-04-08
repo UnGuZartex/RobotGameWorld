@@ -1,8 +1,6 @@
 package GameWorldUtility;
 
 import RobotCollection.Robot.LeftRobotState;
-import RobotCollection.Robot.UpRobotState;
-import RobotCollection.Utility.Direction;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import RobotCollection.Robot.Robot;
