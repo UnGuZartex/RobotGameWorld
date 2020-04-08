@@ -2,6 +2,7 @@ package GameWorld;
 
 import GameWorldAPI.GameWorld.Result;
 import RobotCollection.Utility.GridPosition;
+import GameWorldAPI.History.Snapshot;
 
 /**
  * A class to keep track of the grid of the game. This is
@@ -17,30 +18,15 @@ public class Grid {
     /**
      * Variable referring to the height of this grid.
      */
-    private final int height;
+    private int height;
     /**
      * Variable referring to the width of this grid.
      */
-    private final int width;
+    private int width;
     /**
      * Variable referring to the cells in this grid.
      */
-    private final Cell[][] cells;
-
-    /**
-     * Initialise a new grid with given cells.
-     *
-     * @param cells The cells for this Grid.
-     *
-     * @post A new grid is initialised with the given cells and
-     *       the height and width of this grid is set to the the
-     *       dimensions of the given cells.
-     *
-     * @effect Calls constructor with given cells and its dimensions.
-     */
-    public Grid(Cell[][] cells) {
-        this(cells.length, cells[0].length, cells);
-    }
+    private Cell[][] cells;
 
     /**
      * Initialise a new grid with given height and width.
@@ -57,6 +43,33 @@ public class Grid {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 cells[i][j] = getDefaultCell();
+            }
+        }
+    }
+
+    /**
+     * Initialise a new grid with given cells.
+     *
+     * @param cells The cells for this Grid.
+     *
+     * @post A new grid is initialised with the given cells and
+     *       the height and width of this grid is set to the the
+     *       dimensions of the given cells.
+     *
+     * @effect Calls constructor with given cells and its dimensions.
+     */
+    public Grid(Cell[][] cells) {
+        this(cells.length, cells[0].length, cells);
+    }
+
+    public Grid(Grid grid) {
+        width = grid.width;
+        height = grid.height;
+        cells = new Cell[width][height];
+
+        for (int x = 0; x < grid.cells.length; x++) {
+            for (int y = 0; y < grid.cells[x].length; y++) {
+                cells[x][y] = new Cell(grid.cells[x][y]);
             }
         }
     }
@@ -184,7 +197,7 @@ public class Grid {
             if (hasWon(currentPosition)) {
                 return Result.END;
             }
-            return Result.SUCCES;
+            return Result.SUCCESS;
         }
         else {
             return Result.FAILURE;

@@ -5,6 +5,7 @@ import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import RobotCollection.Robot.Robot;
 import GameWorld.*;
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class LevelInitializer implements GameWorldType{
+public class LevelInitializer implements GameWorldType {
 
     private LevelLoader levelLoader = new LevelLoader();
 
@@ -47,8 +48,8 @@ public class LevelInitializer implements GameWorldType{
     }
 
     @Override
-    public GameWorld createNewGameworld() {
-        Robot gameWorldRobot = new Robot(new GridPosition(1,1), new LeftRobotState());
+    public GameWorld createNewGameWorld() {
+        Robot gameWorldRobot = new Robot(new GridPosition(1,1), Direction.LEFT);
         Level returnGameWorld = getLevel(gameWorldRobot);
         setCorrectGameWorld(returnGameWorld, gameWorldRobot);
         return returnGameWorld;

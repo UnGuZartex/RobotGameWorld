@@ -1,6 +1,7 @@
 package GameWorldUtility;
 
 import RobotCollection.Robot.*;
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,10 +37,10 @@ class TurnRightActionTest {
         gridPositionLeft = new GridPosition(xLeft, yLeft);
         gridPositionRight = new GridPosition(xRight, yRight);
 
-        robotUp = new Robot(gridPositionUp, new UpRobotState());
-        robotDown = new Robot(gridPositionDown, new DownRobotState());
-        robotLeft = new Robot(gridPositionLeft, new LeftRobotState());
-        robotRight = new Robot(gridPositionRight, new RightRobotState());
+        robotUp = new Robot(gridPositionUp, Direction.UP);
+        robotDown = new Robot(gridPositionDown, Direction.DOWN);
+        robotLeft = new Robot(gridPositionLeft, Direction.LEFT);
+        robotRight = new Robot(gridPositionRight, Direction.RIGHT);
 
         actionUp = new TurnRightAction();
         actionUp.setRobot(robotUp);
@@ -72,22 +73,14 @@ class TurnRightActionTest {
     }
 
     @Test
-    void getRobot() {
-        assertEquals(robotUp, actionUp.getRobot());
-        assertEquals(robotRight, actionRight.getRobot());
-        assertEquals(robotLeft, actionLeft.getRobot());
-        assertEquals(robotRight, actionRight.getRobot());
-    }
-
-    @Test
     void setRobot() {
-        assertEquals(robotLeft, actionLeft.getRobot());
+        assertEquals(robotLeft, actionLeft.robot);
         actionLeft.setRobot(robotDown);
-        assertEquals(robotDown, actionLeft.getRobot());
+        assertEquals(robotDown, actionLeft.robot);
         actionLeft.setRobot(robotUp);
-        assertEquals(robotUp, actionLeft.getRobot());
+        assertEquals(robotUp, actionLeft.robot);
         actionLeft.setRobot(robotRight);
-        assertEquals(robotRight, actionLeft.getRobot());
+        assertEquals(robotRight, actionLeft.robot);
     }
 
     @Test
@@ -100,53 +93,53 @@ class TurnRightActionTest {
 
     @Test
     void execute_up() {
-        assertEquals("UP", actionUp.getRobot().getDirection());
+        assertEquals("UP", actionUp.robot.getDirection());
         actionUp.execute();
-        assertEquals("RIGHT", actionUp.getRobot().getDirection());
+        assertEquals("RIGHT", actionUp.robot.getDirection());
         actionUp.execute();
-        assertEquals("DOWN", actionUp.getRobot().getDirection());
+        assertEquals("DOWN", actionUp.robot.getDirection());
         actionUp.execute();
-        assertEquals("LEFT", actionUp.getRobot().getDirection());
+        assertEquals("LEFT", actionUp.robot.getDirection());
         actionUp.execute();
-        assertEquals("UP", actionUp.getRobot().getDirection());
+        assertEquals("UP", actionUp.robot.getDirection());
     }
 
     @Test
     void execute_down() {
-        assertEquals("DOWN", actionDown.getRobot().getDirection());
+        assertEquals("DOWN", actionDown.robot.getDirection());
         actionDown.execute();
-        assertEquals("LEFT", actionDown.getRobot().getDirection());
+        assertEquals("LEFT", actionDown.robot.getDirection());
         actionDown.execute();
-        assertEquals("UP", actionDown.getRobot().getDirection());
+        assertEquals("UP", actionDown.robot.getDirection());
         actionDown.execute();
-        assertEquals("RIGHT", actionDown.getRobot().getDirection());
+        assertEquals("RIGHT", actionDown.robot.getDirection());
         actionDown.execute();
-        assertEquals("DOWN", actionDown.getRobot().getDirection());
+        assertEquals("DOWN", actionDown.robot.getDirection());
     }
 
     @Test
     void execute_left() {
-        assertEquals("LEFT", actionLeft.getRobot().getDirection());
+        assertEquals("LEFT", actionLeft.robot.getDirection());
         actionLeft.execute();
-        assertEquals("UP", actionLeft.getRobot().getDirection());
+        assertEquals("UP", actionLeft.robot.getDirection());
         actionLeft.execute();
-        assertEquals("RIGHT", actionLeft.getRobot().getDirection());
+        assertEquals("RIGHT", actionLeft.robot.getDirection());
         actionLeft.execute();
-        assertEquals("DOWN", actionLeft.getRobot().getDirection());
+        assertEquals("DOWN", actionLeft.robot.getDirection());
         actionLeft.execute();
-        assertEquals("LEFT", actionLeft.getRobot().getDirection());
+        assertEquals("LEFT", actionLeft.robot.getDirection());
     }
 
     @Test
     void execute_right() {
-        assertEquals("RIGHT", actionRight.getRobot().getDirection());
+        assertEquals("RIGHT", actionRight.robot.getDirection());
         actionRight.execute();
-        assertEquals("DOWN", actionRight.getRobot().getDirection());
+        assertEquals("DOWN", actionRight.robot.getDirection());
         actionRight.execute();
-        assertEquals("LEFT", actionRight.getRobot().getDirection());
+        assertEquals("LEFT", actionRight.robot.getDirection());
         actionRight.execute();
-        assertEquals("UP", actionRight.getRobot().getDirection());
+        assertEquals("UP", actionRight.robot.getDirection());
         actionRight.execute();
-        assertEquals("RIGHT", actionRight.getRobot().getDirection());
+        assertEquals("RIGHT", actionRight.robot.getDirection());
     }
 }

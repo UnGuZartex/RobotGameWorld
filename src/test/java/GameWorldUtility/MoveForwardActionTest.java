@@ -1,6 +1,7 @@
 package GameWorldUtility;
 
 import RobotCollection.Robot.*;
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,10 +37,10 @@ class MoveForwardActionTest {
         gridPositionLeft = new GridPosition(xLeft, yLeft);
         gridPositionRight = new GridPosition(xRight, yRight);
 
-        robotUp = new Robot(gridPositionUp, new UpRobotState());
-        robotDown = new Robot(gridPositionDown, new DownRobotState());
-        robotLeft = new Robot(gridPositionLeft, new LeftRobotState());
-        robotRight = new Robot(gridPositionRight, new RightRobotState());
+        robotUp = new Robot(gridPositionUp, Direction.UP);
+        robotDown = new Robot(gridPositionDown, Direction.DOWN);
+        robotLeft = new Robot(gridPositionLeft, Direction.LEFT);
+        robotRight = new Robot(gridPositionRight, Direction.RIGHT);
 
         actionUp = new MoveForwardAction();
         actionUp.setRobot(robotUp);
@@ -72,22 +73,14 @@ class MoveForwardActionTest {
     }
 
     @Test
-    void getRobot() {
-        assertEquals(robotUp, actionUp.getRobot());
-        assertEquals(robotRight, actionRight.getRobot());
-        assertEquals(robotLeft, actionLeft.getRobot());
-        assertEquals(robotRight, actionRight.getRobot());
-    }
-
-    @Test
     void setRobot() {
-        assertEquals(robotDown, actionDown.getRobot());
+        assertEquals(robotDown, actionDown.robot);
         actionDown.setRobot(robotLeft);
-        assertEquals(robotLeft, actionDown.getRobot());
+        assertEquals(robotLeft, actionDown.robot);
         actionDown.setRobot(robotUp);
-        assertEquals(robotUp, actionDown.getRobot());
+        assertEquals(robotUp, actionDown.robot);
         actionDown.setRobot(robotRight);
-        assertEquals(robotRight, actionDown.getRobot());
+        assertEquals(robotRight, actionDown.robot);
     }
 
     @Test
@@ -100,37 +93,37 @@ class MoveForwardActionTest {
 
     @Test
     void execute_up() {
-        assertEquals(xUp, actionUp.getRobot().getGridPosition().getX());
-        assertEquals(yUp, actionUp.getRobot().getGridPosition().getY());
+        assertEquals(xUp, actionUp.robot.getGridPosition().getX());
+        assertEquals(yUp, actionUp.robot.getGridPosition().getY());
         actionUp.execute();
-        assertEquals(xUp, actionUp.getRobot().getGridPosition().getX());
-        assertEquals(yUp - 1, actionUp.getRobot().getGridPosition().getY());
+        assertEquals(xUp, actionUp.robot.getGridPosition().getX());
+        assertEquals(yUp - 1, actionUp.robot.getGridPosition().getY());
     }
 
     @Test
     void execute_down() {
-        assertEquals(xDown, actionDown.getRobot().getGridPosition().getX());
-        assertEquals(yDown, actionDown.getRobot().getGridPosition().getY());
+        assertEquals(xDown, actionDown.robot.getGridPosition().getX());
+        assertEquals(yDown, actionDown.robot.getGridPosition().getY());
         actionDown.execute();
-        assertEquals(xDown, actionDown.getRobot().getGridPosition().getX());
-        assertEquals(yDown + 1, actionDown.getRobot().getGridPosition().getY());
+        assertEquals(xDown, actionDown.robot.getGridPosition().getX());
+        assertEquals(yDown + 1, actionDown.robot.getGridPosition().getY());
     }
 
     @Test
     void execute_left() {
-        assertEquals(xLeft, actionLeft.getRobot().getGridPosition().getX());
-        assertEquals(yLeft, actionLeft.getRobot().getGridPosition().getY());
+        assertEquals(xLeft, actionLeft.robot.getGridPosition().getX());
+        assertEquals(yLeft, actionLeft.robot.getGridPosition().getY());
         actionLeft.execute();
-        assertEquals(xLeft - 1, actionLeft.getRobot().getGridPosition().getX());
-        assertEquals(yLeft, actionLeft.getRobot().getGridPosition().getY());
+        assertEquals(xLeft - 1, actionLeft.robot.getGridPosition().getX());
+        assertEquals(yLeft, actionLeft.robot.getGridPosition().getY());
     }
 
     @Test
     void execute_right() {
-        assertEquals(xRight, actionRight.getRobot().getGridPosition().getX());
-        assertEquals(yRight, actionRight.getRobot().getGridPosition().getY());
+        assertEquals(xRight, actionRight.robot.getGridPosition().getX());
+        assertEquals(yRight, actionRight.robot.getGridPosition().getY());
         actionRight.execute();
-        assertEquals(xRight + 1, actionRight.getRobot().getGridPosition().getX());
-        assertEquals(yRight, actionRight.getRobot().getGridPosition().getY());
+        assertEquals(xRight + 1, actionRight.robot.getGridPosition().getX());
+        assertEquals(yRight, actionRight.robot.getGridPosition().getY());
     }
 }

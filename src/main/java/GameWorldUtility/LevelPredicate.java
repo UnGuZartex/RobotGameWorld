@@ -13,7 +13,7 @@ public abstract class LevelPredicate implements Predicate {
     /**
      * Variable referring to the level this predicate operates on.
      */
-    private Level level;
+    protected Level level;
 
     /**
      * Get the name of this predicate.
@@ -29,15 +29,6 @@ public abstract class LevelPredicate implements Predicate {
      *         of this predicate.
      */
     public abstract boolean evaluate();
-
-    /**
-     * Get the level this predicate operates on.
-     *
-     * @return The level this predicate operates on.
-     */
-    protected Level getLevel() {
-        return level;
-    }
 
     /**
      * Set the level this predicate operates on.

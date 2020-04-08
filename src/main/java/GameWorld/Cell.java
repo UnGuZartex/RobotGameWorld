@@ -23,6 +23,10 @@ public class Cell {
         this.cellType = cellType;
     }
 
+    public Cell(Cell cell) {
+        cellType = cell.cellType;
+    }
+
     /**
      * Get the CellType of this Cell.
      *

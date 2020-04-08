@@ -4,6 +4,7 @@ import GameWorld.Cell;
 import GameWorld.CellType;
 import GameWorld.Level;
 import RobotCollection.Robot.*;
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +40,9 @@ class WallInFrontPredicateTest {
         gridPositionNotBeforeWall = new GridPosition(xNotBeforeWall, yNotBeforeWall);
         gridPositionBeforeNothing = new GridPosition(xBeforeNothing, yBeforeNothing);
 
-        robotBeforeWall = new Robot(gridPositionBeforeWall, new UpRobotState());
-        robotNotBeforeWall = new Robot(gridPositionNotBeforeWall, new DownRobotState());
-        robotBeforeNothing = new Robot(gridPositionBeforeNothing, new LeftRobotState());
+        robotBeforeWall = new Robot(gridPositionBeforeWall, Direction.UP);
+        robotNotBeforeWall = new Robot(gridPositionNotBeforeWall, Direction.DOWN);
+        robotBeforeNothing = new Robot(gridPositionBeforeNothing, Direction.LEFT);
 
         cellsBeforeWall = new Cell[][]{
                 {new Cell(CellType.GOAL), new Cell(CellType.WALL), new Cell(CellType.BLANK)},
@@ -92,19 +93,12 @@ class WallInFrontPredicateTest {
     }
 
     @Test
-    void getLevel() {
-        assertEquals(levelBeforeWall, predicateBeforeWall.getLevel());
-        assertEquals(levelNotBeforeWall, predicateNotBeforeWall.getLevel());
-        assertEquals(levelBeforeNothing, predicateBeforeNothing.getLevel());
-    }
-
-    @Test
     void setLevel() {
-        assertEquals(levelBeforeWall, predicateBeforeWall.getLevel());
+        assertEquals(levelBeforeWall, predicateBeforeWall.level);
         predicateBeforeWall.setLevel(levelNotBeforeWall);
-        assertEquals(levelNotBeforeWall, predicateBeforeWall.getLevel());
+        assertEquals(levelNotBeforeWall, predicateBeforeWall.level);
         predicateBeforeWall.setLevel(levelBeforeNothing);
-        assertEquals(levelBeforeNothing, predicateBeforeWall.getLevel());
+        assertEquals(levelBeforeNothing, predicateBeforeWall.level);
     }
 
     @Test

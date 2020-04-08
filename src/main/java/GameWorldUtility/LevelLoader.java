@@ -4,8 +4,8 @@ import GameWorld.Cell;
 import GameWorld.CellType;
 import GameWorld.Level;
 import GameWorldAPI.GameWorld.GameWorld;
-import RobotCollection.Robot.LeftRobotState;
 import RobotCollection.Robot.Robot;
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 
 /**
@@ -28,8 +28,9 @@ public class LevelLoader {
      * Load a level which is hardcoded in this level loader. This level is
      * set in the game state.
      */
-    public GameWorld loadLevel() {
-        Robot robot = new Robot(new GridPosition(1,1), new LeftRobotState());
+
+    public Level loadLevel() {
+        Robot robot = new Robot(new GridPosition(1,1), Direction.LEFT);
         return new Level(robot, cells);
     }
 }

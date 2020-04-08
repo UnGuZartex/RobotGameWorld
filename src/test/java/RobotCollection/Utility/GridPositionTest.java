@@ -36,4 +36,9 @@ class GridPositionTest {
     void getY() {
         assertEquals(y, gridPosition.getY());
     }
+
+    @Test
+    void toStringTest() {
+        assertEquals("(" + x + ", " + y + ")", gridPosition.toString());
+    }
 }

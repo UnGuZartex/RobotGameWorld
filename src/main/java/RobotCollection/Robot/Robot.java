@@ -1,6 +1,7 @@
 package RobotCollection.Robot;
 
 import RobotCollection.Utility.GridPosition;
+import RobotCollection.Utility.Direction;
 
 /**
  * A class representing a robot. This has coordinates and a direction.
@@ -19,28 +20,28 @@ public class Robot {
     /**
      * Variable referring to the state of this robot.
      */
-    private RobotState robotState;
+    private Direction direction;
+
 
     /**
-     * Initialise this robot with given grid position and robot state.
+     * Initialise a new robot with given x and y coordinates, as
+     * well as a direction.
      *
      * @param gridPosition The grid position for this robot.
-     * @param robotState The robot state for this robot.
+     * @param direction The direction for this robot.
      *
      * @post The grid position of this robot is set to the given grid position,
      *       if and only if this given position is valid.
-     * @post The robot state of this robot is set to the given robot state.
-     *
      * @throws IllegalArgumentException
      *         If the given grid position is not a valid position.
      */
-    public Robot(GridPosition gridPosition, RobotState robotState) throws IllegalArgumentException {
-        if (isValidPosition(gridPosition)) {
-            this.gridPosition = gridPosition;
-        } else {
-            throw new IllegalArgumentException("Invalid position for a robot!");
-        }
-        this.robotState = robotState;
+    public Robot(GridPosition gridPosition, Direction direction) {
+        this.gridPosition = gridPosition;
+        this.direction = direction;
+    }
+
+    public Robot copy() {
+        return new Robot(gridPosition, direction);
     }
 
     /**
@@ -53,16 +54,16 @@ public class Robot {
     }
 
     /**
-     * Return the direction this robot is directed to.
+     * Get the direction of this robot
      *
-     * @return The name of the robot state of this robot.
+     * @return A string representing the direction of the robot
      */
     public String getDirection() {
-        return robotState.getName();
+        return direction.name();
     }
 
     /**
-     * Checks whether or not the given grid position is a valid position for this robot.
+     * Checks whether the given coordinates are valid for a robot.
      *
      * @param gridPosition The grid position to check.
      *
@@ -74,13 +75,13 @@ public class Robot {
                gridPosition.getY() >= 0;
     }
 
+
     /**
-     * Get the position forward of this robot.
-     *
-     * @return The position forward according to the robot state.
+     * Gets the position of the block in front of the robot
+     * @return position in front of the robot
      */
-    public GridPosition getPositionForward() {
-        return robotState.getPositionForward(gridPosition);
+    public GridPosition getForwardPosition() {
+        return direction.getPositionForward(gridPosition);
     }
 
     /**
@@ -89,7 +90,7 @@ public class Robot {
      * @post The robot state is set to the state to the left of this robot's state.
      */
     public void turnLeft() {
-        robotState = robotState.getLeftState();
+        direction = direction.turnLeft();
     }
 
     /**
@@ -98,7 +99,7 @@ public class Robot {
      * @post The robot state is set to the state to the right of this robot's state.
      */
     public void turnRight() {
-        robotState = robotState.getRightState();
+        direction = direction.turnRight();
     }
 
     /**
@@ -106,16 +107,8 @@ public class Robot {
      *
      * @post The robot position is set one step forward forward if
      *       this position is a valid position.
-     *
-     * @throws IllegalStateException
-     *         If the robot can't move a step forward.
      */
-    public void moveForward() throws IllegalStateException {
-        GridPosition newGridPosition = getPositionForward();
-        if (isValidPosition(newGridPosition)) {
-            gridPosition = newGridPosition;
-        } else {
-            throw new IllegalStateException("This robot can't move forward!");
-        }
+    public void moveForward() {
+        this.gridPosition = getForwardPosition();
     }
 }

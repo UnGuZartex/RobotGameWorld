@@ -24,6 +24,6 @@ public class TurnLeftAction extends RobotAction {
      */
     @Override
     public void execute() {
-        getRobot().turnLeft();
+        robot.turnLeft();
     }
 }

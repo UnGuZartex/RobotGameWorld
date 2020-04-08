@@ -24,6 +24,6 @@ public class TurnRightAction extends RobotAction {
      */
     @Override
     public void execute() {
-        getRobot().turnRight();
+        robot.turnRight();
     }
 }

@@ -57,13 +57,13 @@ class DirectionTest {
 
     @Test
     void moveForward() {
-        assertEquals(x, up.moveForward(gridPosition).getX());
-        assertEquals(y - 1, up.moveForward(gridPosition).getY());
-        assertEquals(x, down.moveForward(gridPosition).getX());
-        assertEquals(y + 1, down.moveForward(gridPosition).getY());
-        assertEquals(x - 1, left.moveForward(gridPosition).getX());
-        assertEquals(y, left.moveForward(gridPosition).getY());
-        assertEquals(x + 1, right.moveForward(gridPosition).getX());
-        assertEquals(y, right.moveForward(gridPosition).getY());
+        assertEquals(x, up.getPositionForward(gridPosition).getX());
+        assertEquals(y - 1, up.getPositionForward(gridPosition).getY());
+        assertEquals(x, down.getPositionForward(gridPosition).getX());
+        assertEquals(y + 1, down.getPositionForward(gridPosition).getY());
+        assertEquals(x - 1, left.getPositionForward(gridPosition).getX());
+        assertEquals(y, left.getPositionForward(gridPosition).getY());
+        assertEquals(x + 1, right.getPositionForward(gridPosition).getX());
+        assertEquals(y, right.getPositionForward(gridPosition).getY());
     }
 }

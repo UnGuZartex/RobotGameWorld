@@ -26,6 +26,11 @@ public class GridPosition {
         this.y = y;
     }
 
+//    public GridPosition(GridPosition gridPosition) {
+//        this.x = gridPosition.x;
+//        this.y = gridPosition.y;
+//    }
+
     /**
      * Get the x-coordinate of this position.
      *
@@ -42,5 +47,11 @@ public class GridPosition {
      */
     public int getY() {
         return  y;
+    }
+
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
     }
 }

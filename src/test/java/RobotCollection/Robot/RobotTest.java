@@ -1,5 +1,6 @@
 package RobotCollection.Robot;
 
+import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,10 +33,10 @@ class RobotTest {
         gridPositionLeft = new GridPosition(xLeft, yLeft);
         gridPositionRight = new GridPosition(xRight, yRight);
 
-        robotUp = new Robot(gridPositionUp, new UpRobotState());
-        robotDown = new Robot(gridPositionDown, new DownRobotState());
-        robotLeft = new Robot(gridPositionLeft, new LeftRobotState());
-        robotRight = new Robot(gridPositionRight, new RightRobotState());
+        robotUp = new Robot(gridPositionUp, Direction.UP);
+        robotDown = new Robot(gridPositionDown, Direction.DOWN);
+        robotLeft = new Robot(gridPositionLeft,Direction.LEFT);
+        robotRight = new Robot(gridPositionRight, Direction.RIGHT);
     }
 
     @AfterEach
@@ -56,7 +57,6 @@ class RobotTest {
     @Test
     void RobotGridPositionRobotState_InvalidGridPosition() {
         assertFalse(Robot.isValidPosition(new GridPosition(-1,-1)));
-        assertThrows(IllegalArgumentException.class, () -> { new Robot(new GridPosition(-1,-1), new UpRobotState()); });
     }
 
     @Test
@@ -92,26 +92,26 @@ class RobotTest {
 
     @Test
     void getPositionForward_up() {
-        assertEquals(xUp, robotUp.getPositionForward().getX());
-        assertEquals(yUp - 1, robotUp.getPositionForward().getY());
+        assertEquals(xUp, robotUp.getForwardPosition().getX());
+        assertEquals(yUp - 1, robotUp.getForwardPosition().getY());
     }
 
     @Test
     void getPositionForward_down() {
-        assertEquals(xDown, robotDown.getPositionForward().getX());
-        assertEquals(yDown + 1, robotDown.getPositionForward().getY());
+        assertEquals(xDown, robotDown.getForwardPosition().getX());
+        assertEquals(yDown + 1, robotDown.getForwardPosition().getY());
     }
 
     @Test
     void getPositionForward_left() {
-        assertEquals(xLeft - 1, robotLeft.getPositionForward().getX());
-        assertEquals(yLeft, robotLeft.getPositionForward().getY());
+        assertEquals(xLeft - 1, robotLeft.getForwardPosition().getX());
+        assertEquals(yLeft, robotLeft.getForwardPosition().getY());
     }
 
     @Test
     void getPositionForward_right() {
-        assertEquals(xRight + 1, robotRight.getPositionForward().getX());
-        assertEquals(yRight, robotRight.getPositionForward().getY());
+        assertEquals(xRight + 1, robotRight.getForwardPosition().getX());
+        assertEquals(yRight, robotRight.getForwardPosition().getY());
     }
 
     @Test
@@ -172,9 +172,8 @@ class RobotTest {
 
     @Test
     void moveForward_canNotMoveForward() {
-        Robot robot = new Robot(new GridPosition(0,5), new LeftRobotState());
-        assertFalse(Robot.isValidPosition(robot.getPositionForward()));
-        assertThrows(IllegalStateException.class, robot::moveForward);
+        Robot robot = new Robot(new GridPosition(0,5), Direction.LEFT);
+        assertFalse(Robot.isValidPosition(robot.getForwardPosition()));
     }
 
     @Test
