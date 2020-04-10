@@ -12,7 +12,16 @@ import RobotCollection.Robot.Robot;
 import java.awt.Graphics;
 import java.time.LocalDateTime;
 
+/**
+ * A class for levels
+ *
+ * @invar A level must have valid robot and grid at all time.
+ *        | isValidRobotGrid(robot, grid)
+ *
+ * @author Alpha-team
+ */
 public class Level implements GameWorld, HistoryTracked {
+
     /**
      * Variable referring to the robot in this level.
      */
@@ -21,37 +30,49 @@ public class Level implements GameWorld, HistoryTracked {
      * Variable referring to the grid in this level.
      */
     private Grid grid;
+
     private final GenericHistory history;
     private Result lastResult = Result.SUCCESS;
     private LevelPainter levelPainter;
 
     /**
-     * Initialise a new level with given robot and direction,
-     * as well as the cells for the grid of the level.
-     *
-     * @param robot the robot for this level
-     * @param gridCells The cells for the grid of this level.
-     *
-     * @post The robot of this level is set to a new robot with given
-     *       position and direction.
-     * @post The grid of this level is set to a new grid with the
-     *       given cells.
-     * @throws IllegalArgumentException
-     *         When the given robot position is an invalid position in the cells.
-     */
-    /**
      * TODO library
+     * Initialise a new level with given robot and grid.
+     *
+     * @param robot the robot for this level.
+     * @param grid The grid for this level.
+     *
+     * @post The robot of this level is set to the given robot, if that robot
+     *       is valid in this level.
+     * @post The grid of this level is set to the given grid, if that grid is
+     *       valid in this level.
+     *
+     * @throws IllegalArgumentException
+     *         When the given robot and grid are invalid.
      */
-    public Level(Robot robot, Cell[][] gridCells) throws IllegalArgumentException {
-        this.grid = new Grid(gridCells);
-        if (!grid.isWalkablePosition(robot.getGridPosition())) {
-            throw new IllegalArgumentException("The given robot position is invalid in the cells");
+    public Level(Robot robot, Grid grid) throws IllegalArgumentException {
+        if (!isValidRobotGrid(robot, grid)) {
+            throw new IllegalArgumentException("The given robot and grid are invalid!");
         }
         this.robot = robot;
+        this.grid = grid;
         this.history = new GenericHistory(this);
     }
 
+    /**
+     * Check whether or not the given robot and grid are valid for this level.
+     *
+     * @param robot The robot to check.
+     * @param grid The grid to check.
+     *
+     * @return True if and only if the given robot's position is walkable in
+     *         the given grid.
+     */
+    public static boolean isValidRobotGrid(Robot robot, Grid grid) {
+        return grid.isWalkablePosition(robot.getGridPosition());
+    }
 
+    // TODO execute action in level
     @Override
     public Result executeAction(Action action) {
         backup();
@@ -62,17 +83,26 @@ public class Level implements GameWorld, HistoryTracked {
         return lastResult;
     }
 
+    // TODO evaluate predicate in level
     @Override
     public boolean evaluatePredicate(Predicate predicate) {
         return predicate.evaluate();
     }
 
+    /**
+     * Create a new snapshot of this level.
+     *
+     * @effect The name and creation time of the snapshot to return are printed.
+     *
+     * @return A new snapshot based on this level.
+     */
     @Override
     public Snapshot createSnapshot() {
         LevelSnapshot toReturn = new LevelSnapshot();
         System.out.println("Creating new Snapshot: " + toReturn.getName() + "@" + toReturn.getSnapshotDate());
         return toReturn;
     }
+
 
     @Override
     public void loadSnapshot(Snapshot snapshot) {
@@ -116,7 +146,7 @@ public class Level implements GameWorld, HistoryTracked {
         try {
             return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
         }
-        catch (IndexOutOfBoundsException e) {
+        catch (IndexOutOfBoundsException ignore) {
             return true;
         }
     }

@@ -2,8 +2,8 @@ package GameWorldUtility;
 
 import GameWorld.Cell;
 import GameWorld.CellType;
+import GameWorld.Grid;
 import GameWorld.Level;
-import GameWorldAPI.GameWorld.GameWorld;
 import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
@@ -31,6 +31,6 @@ public class LevelLoader {
 
     public Level loadLevel() {
         Robot robot = new Robot(new GridPosition(1,1), Direction.LEFT);
-        return new Level(robot, cells);
+        return new Level(robot, new Grid(cells));
     }
 }

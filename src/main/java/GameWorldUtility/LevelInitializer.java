@@ -59,7 +59,7 @@ public class LevelInitializer implements GameWorldType {
         Cell[][] cells = new Cell[][]{new Cell[]{new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)},
                 new Cell[]{new Cell(CellType.WALL), new Cell(CellType.BLANK), new Cell(CellType.GOAL)},
                 new Cell[]{new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)}};
-        return new Level(gameWorldRobot, cells);
+        return new Level(gameWorldRobot, new Grid(cells));
     }
 
     private void setCorrectGameWorld(Level level, Robot robot) {

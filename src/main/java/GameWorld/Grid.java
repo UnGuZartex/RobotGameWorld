@@ -30,7 +30,7 @@ public class Grid {
      * @throws IllegalArgumentException
      *         If the given cells are not valid for a grid.
      */
-    public Grid(Cell[][] cells) {
+    public Grid(Cell[][] cells) throws IllegalArgumentException {
         if (areValidCells(cells)) {
             this.cells = cells;
         } else {
@@ -58,11 +58,11 @@ public class Grid {
      *
      * @param cells The cells to check.
      *
-     * @return True if and only if the given cells are effective, null in all
-     *         other cases.
+     * @return True if and only if the given cells are effective and both the height
+     *         and width are greater than 0, false in all other cases.
      */
     public static boolean areValidCells(Cell[][] cells) {
-        return cells != null;
+        return cells != null && cells.length > 0 && cells[0].length > 0;
     }
 
     /**
@@ -77,6 +77,25 @@ public class Grid {
      */
     public Cell getCellAt(GridPosition position) throws IndexOutOfBoundsException {
         return cells[position.getX()][position.getY()];
+    }
+
+    /**
+     * Get the result based on the given position.
+     *
+     * @param position The position to base the result on.
+     *
+     * @return If the given position is not walkable in this grid, then a failure
+     *         result is returned. If the given position is winning, then is an
+     *         ending result returned. In all other cases is a success result returned.
+     */
+    public Result resultingCondition(GridPosition position) {
+        if (!isWalkablePosition(position)) {
+            return Result.FAILURE;
+        }
+        if (isWinningPosition(position)) {
+            return Result.END;
+        }
+        return Result.SUCCESS;
     }
 
     /**
@@ -106,18 +125,6 @@ public class Grid {
             return getCellAt(position).getCellType().isWin();
         } catch (IndexOutOfBoundsException ignore) {
             return false;
-        }
-    }
-
-    public Result resultingCondition(GridPosition currentPosition) {
-        if (isWalkablePosition(currentPosition)) {
-            if (isWinningPosition(currentPosition)) {
-                return Result.END;
-            }
-            return Result.SUCCESS;
-        }
-        else {
-            return Result.FAILURE;
         }
     }
 }

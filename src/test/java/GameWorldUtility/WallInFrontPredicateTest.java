@@ -2,6 +2,7 @@ package GameWorldUtility;
 
 import GameWorld.Cell;
 import GameWorld.CellType;
+import GameWorld.Grid;
 import GameWorld.Level;
 import RobotCollection.Robot.*;
 import RobotCollection.Utility.Direction;
@@ -24,6 +25,7 @@ class WallInFrontPredicateTest {
     GridPosition gridPositionBeforeWall, gridPositionNotBeforeWall, gridPositionBeforeNothing;
     Random random;
     Cell[][] cellsBeforeWall, cellsNotBeforeWall, cellsBeforeNothing;
+    Grid gridBeforeWall, gridNotBeforeWall, gridBeforeNothing;
     static final int MIN_X = 1, MAX_X = 1, MIN_Y = 1, MAX_Y = 1; // Max is one for easier creation of levels (especially grids)
 
     @BeforeEach
@@ -60,9 +62,13 @@ class WallInFrontPredicateTest {
                 {new Cell(CellType.WALL), new Cell(CellType.GOAL), new Cell(CellType.WALL)}
         };
 
-        levelBeforeWall = new Level(robotBeforeWall, cellsBeforeWall);
-        levelNotBeforeWall = new Level(robotNotBeforeWall, cellsNotBeforeWall);
-        levelBeforeNothing = new Level(robotBeforeNothing, cellsBeforeNothing);
+        gridBeforeWall = new Grid(cellsBeforeWall);
+        gridNotBeforeWall = new Grid(cellsNotBeforeWall);
+        gridBeforeNothing = new Grid(cellsBeforeNothing);
+
+        levelBeforeWall = new Level(robotBeforeWall, gridBeforeWall);
+        levelNotBeforeWall = new Level(robotNotBeforeWall, gridNotBeforeWall);
+        levelBeforeNothing = new Level(robotBeforeNothing, gridBeforeNothing);
 
         predicateBeforeWall = new WallInFrontPredicate();
         predicateBeforeWall.setLevel(levelBeforeWall);
@@ -84,6 +90,9 @@ class WallInFrontPredicateTest {
         cellsBeforeWall = null;
         cellsNotBeforeWall = null;
         cellsBeforeNothing = null;
+        gridBeforeWall = null;
+        gridNotBeforeWall = null;
+        gridBeforeNothing = null;
         levelBeforeWall = null;
         levelNotBeforeWall = null;
         levelBeforeNothing = null;

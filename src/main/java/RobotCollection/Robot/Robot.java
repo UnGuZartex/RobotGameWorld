@@ -36,7 +36,7 @@ public class Robot {
      * @throws IllegalArgumentException
      *         If the given grid position is not a valid position.
      */
-    public Robot(GridPosition gridPosition, Direction direction) {
+    public Robot(GridPosition gridPosition, Direction direction) throws IllegalArgumentException {
         if (isValidPosition(gridPosition)) {
             this.gridPosition = gridPosition;
         } else {
