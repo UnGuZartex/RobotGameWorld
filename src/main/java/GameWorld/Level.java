@@ -6,7 +6,6 @@ import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
-import GameWorldAPI.Images.ImageLibrary;
 import GameWorldUtility.RobotAction;
 import RobotCollection.Robot.Robot;
 
@@ -45,7 +44,7 @@ public class Level implements GameWorld, HistoryTracked {
      */
     public Level(Robot robot, Cell[][] gridCells) throws IllegalArgumentException {
         this.grid = new Grid(gridCells);
-        if (!grid.isValidRobotPositionInCells(robot.getGridPosition())) {
+        if (!grid.isWalkablePosition(robot.getGridPosition())) {
             throw new IllegalArgumentException("The given robot position is invalid in the cells");
         }
         this.robot = robot;
@@ -115,7 +114,7 @@ public class Level implements GameWorld, HistoryTracked {
 
     public boolean robotHasWallInFront() {
         try {
-            return grid.getCellAt(robot.getForwardPosition()).getCellType() == CellType.WALL;
+            return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
         }
         catch (IndexOutOfBoundsException e) {
             return true;
@@ -134,7 +133,7 @@ public class Level implements GameWorld, HistoryTracked {
 
         public LevelSnapshot() {
             this.mementoRobot = robot.copy();
-            this.mementoGrid = new Grid(grid);
+            this.mementoGrid = grid.copy();
             this.mementoResult = lastResult;
             this.creationTime = LocalDateTime.now();
         }

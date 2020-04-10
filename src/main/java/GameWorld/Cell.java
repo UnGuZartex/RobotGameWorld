@@ -23,10 +23,6 @@ public class Cell {
         this.cellType = cellType;
     }
 
-    public Cell(Cell cell) {
-        cellType = cell.cellType;
-    }
-
     /**
      * Get the CellType of this Cell.
      *
@@ -34,5 +30,14 @@ public class Cell {
      */
     public CellType getCellType() {
         return cellType;
+    }
+
+    /**
+     * Get a copy of this cell.
+     *
+     * @return A new cell with equal cell type.
+     */
+    public Cell copy() {
+        return new Cell(cellType);
     }
 }

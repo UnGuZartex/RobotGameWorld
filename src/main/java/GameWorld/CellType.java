@@ -59,5 +59,4 @@ public enum CellType {
     public boolean isWin() {
         return isWin;
     }
-
 }

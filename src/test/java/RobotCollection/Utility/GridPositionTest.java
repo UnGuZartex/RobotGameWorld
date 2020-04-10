@@ -38,6 +38,14 @@ class GridPositionTest {
     }
 
     @Test
+    void copy() {
+        GridPosition copy = gridPosition.copy();
+        assertNotEquals(gridPosition, copy);
+        assertEquals(gridPosition.getX(), copy.getX());
+        assertEquals(gridPosition.getY(), copy.getY());
+    }
+
+    @Test
     void toStringTest() {
         assertEquals("(" + x + ", " + y + ")", gridPosition.toString());
     }

@@ -22,7 +22,6 @@ public class Robot {
      */
     private Direction direction;
 
-
     /**
      * Initialise a new robot with given x and y coordinates, as
      * well as a direction.
@@ -32,16 +31,31 @@ public class Robot {
      *
      * @post The grid position of this robot is set to the given grid position,
      *       if and only if this given position is valid.
+     * @post The direction of this robot is set to the given direction.
+     *
      * @throws IllegalArgumentException
      *         If the given grid position is not a valid position.
      */
     public Robot(GridPosition gridPosition, Direction direction) {
-        this.gridPosition = gridPosition;
+        if (isValidPosition(gridPosition)) {
+            this.gridPosition = gridPosition;
+        } else {
+            throw new IllegalArgumentException("The given grid position is invalid!");
+        }
         this.direction = direction;
     }
 
-    public Robot copy() {
-        return new Robot(gridPosition, direction);
+    /**
+     * Checks whether the given coordinates are valid for a robot.
+     *
+     * @param gridPosition The grid position to check.
+     *
+     * @return True if and only if both x and y coordinate of the given grid position are
+     *         greater than 0, false otherwise.
+     */
+    public static boolean isValidPosition(GridPosition gridPosition) {
+        return gridPosition.getX() >= 0 &&
+                gridPosition.getY() >= 0;
     }
 
     /**
@@ -63,31 +77,17 @@ public class Robot {
     }
 
     /**
-     * Checks whether the given coordinates are valid for a robot.
-     *
-     * @param gridPosition The grid position to check.
-     *
-     * @return True if and only if both x and y coordinate of the given grid position are
-     *         greater than 0, false otherwise.
-     */
-    public static boolean isValidPosition(GridPosition gridPosition) {
-        return gridPosition.getX() >= 0 &&
-               gridPosition.getY() >= 0;
-    }
-
-
-    /**
      * Gets the position of the block in front of the robot
      * @return position in front of the robot
      */
-    public GridPosition getForwardPosition() {
+    public GridPosition getPositionForward() {
         return direction.getPositionForward(gridPosition);
     }
 
     /**
      * Turn this robot to the left.
      *
-     * @post The robot state is set to the state to the left of this robot's state.
+     * @post The direction of this robot is set to the direction left of it's current direction.
      */
     public void turnLeft() {
         direction = direction.turnLeft();
@@ -96,7 +96,7 @@ public class Robot {
     /**
      * Turn this robot to the right.
      *
-     * @post The robot state is set to the state to the right of this robot's state.
+     * @post The direction of this robot is set to the direction right of it's current direction.
      */
     public void turnRight() {
         direction = direction.turnRight();
@@ -106,9 +106,22 @@ public class Robot {
      * Move this robot one position forward.
      *
      * @post The robot position is set one step forward forward if
-     *       this position is a valid position.
+     *       this position is a valid position, otherwise nothing
+     *       will change.
      */
     public void moveForward() {
-        this.gridPosition = getForwardPosition();
+        GridPosition newPosition = getPositionForward();
+        if (isValidPosition(newPosition)) {
+            this.gridPosition = getPositionForward();
+        }
+    }
+
+    /**
+     * Get a copy of this robot.
+     *
+     * @return A new robot with a copied grid position and the same direction
+     */
+    public Robot copy() {
+        return new Robot(gridPosition.copy(), direction);
     }
 }

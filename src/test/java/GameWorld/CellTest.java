@@ -30,4 +30,25 @@ class CellTest {
         assertEquals(CellType.WALL, wall.getCellType());
         assertEquals(CellType.GOAL, goal.getCellType());
     }
+
+    @Test
+    void copy_blank() {
+        Cell copy = blank.copy();
+        assertNotEquals(blank, copy);
+        assertEquals(blank.getCellType(), copy.getCellType());
+    }
+
+    @Test
+    void copy_wall() {
+        Cell copy = wall.copy();
+        assertNotEquals(wall, copy);
+        assertEquals(wall.getCellType(), copy.getCellType());
+    }
+
+    @Test
+    void copy_goal() {
+        Cell copy = goal.copy();
+        assertNotEquals(goal, copy);
+        assertEquals(goal.getCellType(), copy.getCellType());
+    }    
 }
