@@ -1,11 +1,15 @@
-package GameWorldUtility;
+package GameWorldUtility.Actions;
+
+import GameWorld.Level;
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorldType.Action;
 
 /**
  * A class for actions which turn the robot to the left.
  *
  * @author Alpha-team
  */
-public class TurnLeftAction extends RobotAction {
+public class TurnLeftAction implements Action {
 
     /**
      * Get the name of this action.
@@ -23,7 +27,7 @@ public class TurnLeftAction extends RobotAction {
      * @effect The robot of this action is turned to the left.
      */
     @Override
-    public void execute() {
-        robot.turnLeft();
+    public void execute(GameWorld gameWorld) {
+        ((Level) gameWorld).getRobot().turnLeft();
     }
 }

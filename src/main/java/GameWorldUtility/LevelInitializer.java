@@ -2,6 +2,10 @@ package GameWorldUtility;
 
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
+import GameWorldUtility.Actions.MoveForwardAction;
+import GameWorldUtility.Actions.TurnLeftAction;
+import GameWorldUtility.Actions.TurnRightAction;
+import GameWorldUtility.Predicates.WallInFrontPredicate;
 import RobotCollection.Robot.Robot;
 import GameWorld.*;
 import RobotCollection.Utility.Direction;
@@ -22,7 +26,7 @@ public class LevelInitializer implements GameWorldType {
     /**
      * Variable referring to the actions possible.
      */
-    private ArrayList<RobotAction> actionList = new ArrayList<>(
+    private ArrayList<Action> actionList = new ArrayList<>(
             Arrays.asList(
                     new MoveForwardAction(),
                     new TurnLeftAction(),
@@ -32,7 +36,7 @@ public class LevelInitializer implements GameWorldType {
     /**
      * Variable referring to the predicates.
      */
-    private List<LevelPredicate> predicateList = new ArrayList<>(
+    private List<Predicate> predicateList = new ArrayList<>(
             Collections.singletonList(
                     new WallInFrontPredicate()
             )
@@ -73,27 +77,47 @@ public class LevelInitializer implements GameWorldType {
     public GameWorld createNewGameWorld() {
         Robot gameWorldRobot = new Robot(new GridPosition(1,1), Direction.LEFT);
         Level returnGameWorld = levelLoader.loadLevel(gameWorldRobot);
-        setCorrectGameWorld(returnGameWorld, gameWorldRobot);
+        //setCorrectGameWorld(returnGameWorld, gameWorldRobot);
         return returnGameWorld;
     }
 
-    /**
-     * Set the game world correct.
-     *
-     * @param level The level for this game world.
-     * @param robot The robot for this game world.
-     *
-     * @effect The robot of the actions in the action list are set to
-     *         the given robot.
-     * @effect The level of the predicates in the predicate list are
-     *         set to the given level.
-     */
-    private void setCorrectGameWorld(Level level, Robot robot) {
-        for (RobotAction action : actionList) {
-            action.setRobot(robot);
-        }
-        for (LevelPredicate predicate : predicateList) {
-            predicate.setLevel(level);
-        }
-    }
+//    /**
+//     * Set the game world correct.
+//     *
+//     * @param level The level for this game world.
+//     * @param robot The robot for this game world.
+//     *
+//     * @effect The robot of the actions in the action list are set to
+//     *         the given robot.
+//     * @effect The level of the predicates in the predicate list are
+//     *         set to the given level.
+//     */
+//    private void setCorrectGameWorld(Level level, Robot robot) {
+//        for (RobotAction action : actionList) {
+//            action.setRobot(robot);
+//        }
+//        for (LevelPredicate predicate : predicateList) {
+//            predicate.setLevel(level);
+//        }
+//    }
+//        Level returnGameWorld = getLevel(gameWorldRobot);
+//        // setCorrectGameWorld(returnGameWorld, gameWorldRobot);
+//        return returnGameWorld;
+//    }
+
+//    private Level getLevel(Robot gameWorldRobot) {
+//        Cell[][] cells = new Cell[][]{new Cell[]{new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)},
+//                new Cell[]{new Cell(CellType.WALL), new Cell(CellType.BLANK), new Cell(CellType.GOAL)},
+//                new Cell[]{new Cell(CellType.WALL), new Cell(CellType.WALL), new Cell(CellType.WALL)}};
+//        return new Level(gameWorldRobot, cells);
+//    }
+
+//    private void setCorrectGameWorld(Level level, Robot robot) {
+//        for (RobotAction action : actionList) {
+//            action.setRobot(robot);
+//        }
+//        for (LevelPredicate predicate : predicateList) {
+//            predicate.setLevel(level);
+//        }
+//    }
 }

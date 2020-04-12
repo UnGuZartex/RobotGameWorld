@@ -1,11 +1,15 @@
-package GameWorldUtility;
+package GameWorldUtility.Actions;
+
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorld.Level;
+import GameWorldAPI.GameWorldType.Action;
 
 /**
  * A class for actions which move the robot a step forward.
  *
  * @author Alpha-team
  */
-public class MoveForwardAction extends RobotAction {
+public class MoveForwardAction implements Action {
 
     /**
      * Get the name of this action.
@@ -23,7 +27,7 @@ public class MoveForwardAction extends RobotAction {
      * @effect The robot of this action makes a move forward.
      */
     @Override
-    public void execute() {
-        robot.moveForward();
+    public void execute(GameWorld gameWorld) {
+        ((Level) gameWorld).getRobot().moveForward();
     }
 }

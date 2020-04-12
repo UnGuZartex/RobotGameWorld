@@ -1,4 +1,8 @@
-package GameWorldUtility;
+package GameWorldUtility.Predicates;
+
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorldType.Predicate;
+import GameWorld.Level;
 
 /**
  * A class for wall in front predicates. This predicate checks if the robot of
@@ -6,7 +10,7 @@ package GameWorldUtility;
  *
  * @author Alpha-team
  */
-public class WallInFrontPredicate extends LevelPredicate {
+public class WallInFrontPredicate implements Predicate {
 
     /**
      * Get the name of this predicate.
@@ -25,7 +29,7 @@ public class WallInFrontPredicate extends LevelPredicate {
      *         a wall in front.
      */
     @Override
-    public boolean evaluate() {
-        return level.robotHasWallInFront();
+    public boolean evaluate(GameWorld gameWorld) {
+        return ((Level) gameWorld).robotHasWallInFront();
     }
 }

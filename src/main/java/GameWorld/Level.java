@@ -6,7 +6,6 @@ import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
-import GameWorldUtility.RobotAction;
 import RobotCollection.Robot.Robot;
 
 import java.awt.Graphics;
@@ -72,13 +71,15 @@ public class Level implements GameWorld, HistoryTracked {
         return grid.isWalkablePosition(robot.getGridPosition());
     }
 
+    public Robot getRobot() {
+        return robot;
+    }
+
     // TODO execute action in level
     @Override
     public Result executeAction(Action action) {
         backup();
-        RobotAction robotAction = (RobotAction) action;
-        robotAction.setRobot(this.robot);
-        action.execute();
+        action.execute(this);
         lastResult = grid.resultingCondition(robot.getGridPosition());
         return lastResult;
     }
@@ -86,7 +87,7 @@ public class Level implements GameWorld, HistoryTracked {
     // TODO evaluate predicate in level
     @Override
     public boolean evaluatePredicate(Predicate predicate) {
-        return predicate.evaluate();
+        return predicate.evaluate(this);
     }
 
     /**

@@ -1,11 +1,15 @@
-package GameWorldUtility;
+package GameWorldUtility.Actions;
+
+import GameWorld.Level;
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorldType.Action;
 
 /**
  * A class for actions which turn the robot to the right.
  *
  * @author Alpha-team
  */
-public class TurnRightAction extends RobotAction {
+public class TurnRightAction implements Action {
 
     /**
      * Get the name of this action.
@@ -23,7 +27,7 @@ public class TurnRightAction extends RobotAction {
      * @effect Turns the robot of this action to the right.
      */
     @Override
-    public void execute() {
-        robot.turnRight();
+    public void execute(GameWorld gameWorld) {
+        ((Level) gameWorld).getRobot().turnRight();
     }
 }
