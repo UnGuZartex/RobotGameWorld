@@ -30,12 +30,11 @@ public class Level implements GameWorld, HistoryTracked {
      */
     private Grid grid;
 
-    private final GenericHistory history;
-    private Result lastResult = Result.SUCCESS;
+    private final GenericHistory history = new GenericHistory(this);
     private LevelPainter levelPainter;
 
     /**
-     * TODO library
+     * TODO library + level painter creation
      * Initialise a new level with given robot and grid.
      *
      * @param robot the robot for this level.
@@ -47,44 +46,81 @@ public class Level implements GameWorld, HistoryTracked {
      *       valid in this level.
      *
      * @throws IllegalArgumentException
-     *         When the given robot and grid are invalid.
+     *         If the given robot is invalid.
+     * @throws IllegalArgumentException
+     *         If the given grid is invalid.
+     * @throws IllegalStateException
+     *         If the position of the given robot is not walkable in the given grid.
      */
-    public Level(Robot robot, Grid grid) throws IllegalArgumentException {
-        if (!isValidRobotGrid(robot, grid)) {
-            throw new IllegalArgumentException("The given robot and grid are invalid!");
+    public Level(Robot robot, Grid grid) throws IllegalArgumentException, IllegalStateException {
+        if (!isValidRobot(robot)) {
+            throw new IllegalArgumentException("The given robot is not valid!");
+        }
+        if (!isValidGrid(grid)) {
+            throw new IllegalArgumentException("The given grid is not valid!");
+        }
+        if (!grid.isWalkablePosition(robot.getGridPosition())) {
+            throw new IllegalStateException("The given robot can't stand on the given grid!");
         }
         this.robot = robot;
         this.grid = grid;
-        this.history = new GenericHistory(this);
     }
 
     /**
-     * Check whether or not the given robot and grid are valid for this level.
+     * Checks whether or not the given robot is valid or not.
      *
      * @param robot The robot to check.
-     * @param grid The grid to check.
      *
-     * @return True if and only if the given robot's position is walkable in
-     *         the given grid.
+     * @return True if and only if the given robot is effective.
      */
-    public static boolean isValidRobotGrid(Robot robot, Grid grid) {
-        return grid.isWalkablePosition(robot.getGridPosition());
+    public static boolean isValidRobot(Robot robot) {
+        return robot != null;
     }
 
+    /**
+     * Checks whether or not the given grid is valid or not.
+     *
+     * @param grid The grid to check.
+     *
+     * @return True if and only if the given grid is effective.
+     */
+    public static boolean isValidGrid(Grid grid) {
+        return grid != null;
+    }
+
+    /**
+     * Get the robot of this level
+     *
+     * @return The robot of this level.
+     */
     public Robot getRobot() {
         return robot;
     }
 
-    // TODO execute action in level
+    /**
+     * Execute the given action with this level.
+     *
+     * @param action The action to execute.
+     *
+     * @effect A backup is made of this level.
+     * @effect The given action is executed with this level.
+     *
+     * @return The last result after the action has been executed.
+     */
     @Override
     public Result executeAction(Action action) {
         backup();
         action.execute(this);
-        lastResult = grid.resultingCondition(robot.getGridPosition());
-        return lastResult;
+        return grid.resultingCondition(robot.getGridPosition());
     }
 
-    // TODO evaluate predicate in level
+    /**
+     * Evaluate the given predicate with this level.
+     *
+     * @param predicate The predicate to evaluate.
+     *
+     * @return The evaluation of the predicate using this level.
+     */
     @Override
     public boolean evaluatePredicate(Predicate predicate) {
         return predicate.evaluate(this);
@@ -109,16 +145,25 @@ public class Level implements GameWorld, HistoryTracked {
      *
      * @param snapshot The snapshot to load.
      *
-     * @post The grid of this robot is set to the grid in the snapshot.
-     * @post The robot of this robot is set to the robot in the snapshot.
-     * @post The result of this robot is set to the reult in the snapshot.
+     * @post The grid of this level is set to the grid in the snapshot.
+     * @post The robot of this level is set to the robot in the snapshot.
+     *
+     * @throws IllegalArgumentException
+     *         If the given snapshot doesn't have a valid robot.
+     * @throws IllegalArgumentException
+     *         If the given snapshot doesn't have a valid grid.
      */
     @Override
-    public void loadSnapshot(Snapshot snapshot) {
+    public void loadSnapshot(Snapshot snapshot) throws IllegalArgumentException {
         LevelSnapshot memento = (LevelSnapshot) snapshot;
+        if (!isValidRobot(memento.mementoRobot)) {
+            throw new IllegalArgumentException("The given snapshot doesn't have a valid robot!");
+        }
+        if (!isValidGrid(memento.mementoGrid)) {
+            throw new IllegalArgumentException("The given snapshot doesn't have a valid robot!");
+        }
         this.grid = memento.mementoGrid;
         this.robot = memento.mementoRobot;
-        this.lastResult = memento.mementoResult;
     }
 
     /**
@@ -177,13 +222,12 @@ public class Level implements GameWorld, HistoryTracked {
      * Give a string representation of this level.
      *
      * @return First the robot of this level with it's position and direction, followed
-     *         by the grid and then the last result.
+     *         by the grid.
      */
     @Override
     public String toString() {
         return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - " +
-                "Grid: " + grid + " -" +
-                "Last result: " + lastResult;
+                "Grid: " + grid;
     }
 
     /**
@@ -216,10 +260,6 @@ public class Level implements GameWorld, HistoryTracked {
          */
         private final Grid mementoGrid = grid.copy();
         /**
-         * Variable referring to the result to remember.
-         */
-        private final Result mementoResult = lastResult;
-        /**
          * Variable referring to the creation time of this snapshot.
          */
         private final LocalDateTime creationTime = LocalDateTime.now();
@@ -232,9 +272,8 @@ public class Level implements GameWorld, HistoryTracked {
          */
         @Override
         public String getName() {
-            return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - " +
-                    "Grid: " + grid + " -" +
-                    "Last result: " + lastResult;
+            return "Robot: " + mementoRobot.getGridPosition() + " " + mementoRobot.getDirection() + " - " +
+                    "Grid: " + mementoGrid;
         }
 
         /**
