@@ -1,7 +1,10 @@
 package GameWorldUtility;
 
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorld.Level;
+import GameWorldAPI.GameWorldType.Action;
 
-public class MoveForwardAction extends RobotAction {
+public class MoveForwardAction implements Action {
 
     @Override
     public String getName() {
@@ -9,7 +12,7 @@ public class MoveForwardAction extends RobotAction {
     }
 
     @Override
-    public void execute() {
-        robot.moveForward();
+    public void execute(GameWorld gameWorld) {
+        ((Level) gameWorld).getRobot().moveForward();
     }
 }

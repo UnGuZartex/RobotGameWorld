@@ -1,6 +1,10 @@
 package GameWorldUtility;
 
-public class WallInFrontPredicate extends LevelPredicate {
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorldType.Predicate;
+import GameWorld.Level;
+
+public class WallInFrontPredicate implements Predicate {
 
     @Override
     public String getName() {
@@ -8,7 +12,7 @@ public class WallInFrontPredicate extends LevelPredicate {
     }
 
     @Override
-    public boolean evaluate() {
-        return level.robotHasWallInFront();
+    public boolean evaluate(GameWorld gameWorld) {
+        return ((Level) gameWorld).robotHasWallInFront();
     }
 }

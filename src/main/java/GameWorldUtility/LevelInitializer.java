@@ -19,7 +19,7 @@ public class LevelInitializer implements GameWorldType {
 
     private LevelLoader levelLoader = new LevelLoader();
 
-    private ArrayList<RobotAction> actionList = new ArrayList<>(
+    private ArrayList<Action> actionList = new ArrayList<>(
             Arrays.asList(
                     new MoveForwardAction(),
                     new TurnLeftAction(),
@@ -27,7 +27,7 @@ public class LevelInitializer implements GameWorldType {
             )
     );
 
-    private List<LevelPredicate> predicateList = new ArrayList<>(
+    private List<Predicate> predicateList = new ArrayList<>(
             Collections.singletonList(
                     new WallInFrontPredicate()
             )
@@ -52,7 +52,7 @@ public class LevelInitializer implements GameWorldType {
     public GameWorld createNewGameWorld() {
         Robot gameWorldRobot = new Robot(new GridPosition(1,1), Direction.LEFT);
         Level returnGameWorld = getLevel(gameWorldRobot);
-        setCorrectGameWorld(returnGameWorld, gameWorldRobot);
+        // setCorrectGameWorld(returnGameWorld, gameWorldRobot);
         return returnGameWorld;
     }
 
@@ -63,12 +63,12 @@ public class LevelInitializer implements GameWorldType {
         return new Level(gameWorldRobot, cells);
     }
 
-    private void setCorrectGameWorld(Level level, Robot robot) {
-        for (RobotAction action : actionList) {
-            action.setRobot(robot);
-        }
-        for (LevelPredicate predicate : predicateList) {
-            predicate.setLevel(level);
-        }
-    }
+//    private void setCorrectGameWorld(Level level, Robot robot) {
+//        for (RobotAction action : actionList) {
+//            action.setRobot(robot);
+//        }
+//        for (LevelPredicate predicate : predicateList) {
+//            predicate.setLevel(level);
+//        }
+//    }
 }

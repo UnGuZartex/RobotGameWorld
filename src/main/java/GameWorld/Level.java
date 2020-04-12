@@ -52,20 +52,21 @@ public class Level implements GameWorld, HistoryTracked {
         this.history = new GenericHistory(this);
     }
 
+    public Robot getRobot() {
+        return robot;
+    }
 
     @Override
     public Result executeAction(Action action) {
         backup();
-        RobotAction robotAction = (RobotAction) action;
-        robotAction.setRobot(this.robot);
-        action.execute();
+        action.execute(this);
         lastResult = grid.resultingCondition(robot.getGridPosition());
         return lastResult;
     }
 
     @Override
     public boolean evaluatePredicate(Predicate predicate) {
-        return predicate.evaluate();
+        return predicate.evaluate(this);
     }
 
     @Override

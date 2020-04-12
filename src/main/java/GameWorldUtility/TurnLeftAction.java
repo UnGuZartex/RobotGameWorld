@@ -1,7 +1,10 @@
 package GameWorldUtility;
 
+import GameWorld.Level;
+import GameWorldAPI.GameWorld.GameWorld;
+import GameWorldAPI.GameWorldType.Action;
 
-public class TurnLeftAction extends RobotAction {
+public class TurnLeftAction implements Action {
 
     @Override
     public String getName() {
@@ -9,7 +12,7 @@ public class TurnLeftAction extends RobotAction {
     }
 
     @Override
-    public void execute() {
-        robot.turnLeft();
+    public void execute(GameWorld gameWorld) {
+        ((Level) gameWorld).getRobot().turnLeft();
     }
 }
