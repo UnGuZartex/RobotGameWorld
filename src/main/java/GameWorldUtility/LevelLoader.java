@@ -28,9 +28,7 @@ public class LevelLoader {
      * Load a level which is hardcoded in this level loader. This level is
      * set in the game state.
      */
-
-    public Level loadLevel() {
-        Robot robot = new Robot(new GridPosition(1,1), Direction.LEFT);
+    public Level loadLevel(Robot robot) {
         return new Level(robot, new Grid(cells));
     }
 }

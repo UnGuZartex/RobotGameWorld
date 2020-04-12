@@ -103,7 +103,15 @@ public class Level implements GameWorld, HistoryTracked {
         return toReturn;
     }
 
-
+    /**
+     * Load the given snapshot.
+     *
+     * @param snapshot The snapshot to load.
+     *
+     * @post The grid of this robot is set to the grid in the snapshot.
+     * @post The robot of this robot is set to the robot in the snapshot.
+     * @post The result of this robot is set to the reult in the snapshot.
+     */
     @Override
     public void loadSnapshot(Snapshot snapshot) {
         LevelSnapshot memento = (LevelSnapshot) snapshot;
@@ -112,36 +120,78 @@ public class Level implements GameWorld, HistoryTracked {
         this.lastResult = memento.mementoResult;
     }
 
+    /**
+     * Make a backup of this level.
+     *
+     * @effect create a new snapshot and add it to the history.
+     */
     @Override
     public void backup() {
         history.add(createSnapshot());
     }
 
+    /**
+     * Undo this level.
+     *
+     * @effect The history of this level is undone.
+     */
     @Override
     public void undo() {
         history.undo();
     }
 
+    /**
+     * Redo this level.
+     *
+     * @effect The history of this level is redone.
+     */
     @Override
     public void redo() {
         history.redo();
     }
 
+    /**
+     * Reset this level.
+     *
+     * @effect The history of this level is reset.
+     */
     @Override
     public void reset() {
         history.reset();
     }
 
+    /**
+     * Paint this level.
+     *
+     * @param g The graphics to paint this level with.
+     *
+     * @effect Paints this level, grid and robot using the level painter.
+     */
     @Override
     public void paint(Graphics g) {
         levelPainter.paint(g, grid, robot);
     }
 
+    /**
+     * Give a string representation of this level.
+     *
+     * @return First the robot of this level with it's position and direction, followed
+     *         by the grid and then the last result.
+     */
     @Override
     public String toString() {
-        return robot.getGridPosition() + " " + robot.getDirection() + "Result: " + lastResult;
+        return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - " +
+                "Grid: " + grid + " -" +
+                "Last result: " + lastResult;
     }
 
+    /**
+     * Check if the robot has a wall in front of him.
+     *
+     * @return True if and only if the cell in the grid in front of the robot has
+     *         the cell type wall, or if no cell is in front of the robot. False
+     *         in all other cases.
+     */
     public boolean robotHasWallInFront() {
         try {
             return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
@@ -151,28 +201,46 @@ public class Level implements GameWorld, HistoryTracked {
         }
     }
 
+    /**
+     * A private class for snapshots of a level.
+     */
     private class LevelSnapshot implements Snapshot {
 
-        private final Robot mementoRobot;
+        /**
+         * Variable referring to the robot to remember.
+         */
+        private final Robot mementoRobot = robot.copy();
+        /**
+         * Variable referring to the grid to remember.
+         */
+        private final Grid mementoGrid = grid.copy();
+        /**
+         * Variable referring to the result to remember.
+         */
+        private final Result mementoResult = lastResult;
+        /**
+         * Variable referring to the creation time of this snapshot.
+         */
+        private final LocalDateTime creationTime = LocalDateTime.now();
 
-        private final Grid mementoGrid;
-
-        private final Result mementoResult;
-
-        private final LocalDateTime creationTime;
-
-        public LevelSnapshot() {
-            this.mementoRobot = robot.copy();
-            this.mementoGrid = grid.copy();
-            this.mementoResult = lastResult;
-            this.creationTime = LocalDateTime.now();
-        }
-
+        /**
+         * Get the name of this snapshot.
+         *
+         * @return First the robot of this snapshot with it's position and direction, followed
+         *         by the grid and then the last result.
+         */
         @Override
         public String getName() {
-            return "Robot: " + robot.getGridPosition() + robot.getDirection() + " Grid: " + grid;
+            return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - " +
+                    "Grid: " + grid + " -" +
+                    "Last result: " + lastResult;
         }
 
+        /**
+         * Get the date of this snapshot.
+         *
+         * @return The creation time of this snapshot.
+         */
         @Override
         public LocalDateTime getSnapshotDate() {
             return creationTime;
