@@ -166,7 +166,6 @@ class MoveForwardActionTest {
 
     @Test
     void execute_right() {
-        assertTrue(levelRight.robotHasWallInFront());
         assertEquals(xRight, levelRight.getRobot().getGridPosition().getX());
         assertEquals(yRight, levelRight.getRobot().getGridPosition().getY());
         moveForwardAction.execute(levelRight);
