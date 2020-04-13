@@ -61,7 +61,7 @@ class RobotTest {
     }
 
     @Test
-    void RobotGridPositionRobotState_InvalidGridPosition() {
+    void Robot_InvalidGridPosition() {
         GridPosition invalidPosition = new GridPosition(-1, -1);
         assertFalse(Robot.isValidPosition(invalidPosition));
         assertThrows(IllegalArgumentException.class, () -> { new Robot(invalidPosition, Direction.UP); });

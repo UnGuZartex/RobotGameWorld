@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 /**
  * A class for levels
  *
- * @invar A level must have valid robot and grid at all time.
- *        | isValidRobotGrid(robot, grid)
+ * @invar A level may not have an invalid robot at any moment.
+ *        | !isInvalidRobot(robot)
+ * @invar A level may not have an invalid grid at any moment.
+ *        | !isInvalidGrid(grid)
  *
  * @author Alpha-team
  */
@@ -29,9 +31,15 @@ public class Level implements GameWorld, HistoryTracked {
      * Variable referring to the grid in this level.
      */
     private Grid grid;
+    /**
+     * Variable referring to the level painter of this level.
+     */
+    private final LevelPainter levelPainter;
 
+
+    // TODO remove history
     private final GenericHistory history = new GenericHistory(this);
-    private LevelPainter levelPainter;
+
 
     /**
      * TODO library + level painter creation
@@ -53,10 +61,10 @@ public class Level implements GameWorld, HistoryTracked {
      *         If the position of the given robot is not walkable in the given grid.
      */
     public Level(Robot robot, Grid grid) throws IllegalArgumentException, IllegalStateException {
-        if (!isValidRobot(robot)) {
+        if (isInvalidRobot(robot)) {
             throw new IllegalArgumentException("The given robot is not valid!");
         }
-        if (!isValidGrid(grid)) {
+        if (isInvalidGrid(grid)) {
             throw new IllegalArgumentException("The given grid is not valid!");
         }
         if (!grid.isWalkablePosition(robot.getGridPosition())) {
@@ -64,28 +72,29 @@ public class Level implements GameWorld, HistoryTracked {
         }
         this.robot = robot;
         this.grid = grid;
+        this.levelPainter = new LevelPainter(null);
     }
 
     /**
-     * Checks whether or not the given robot is valid or not.
+     * Checks whether or not the given robot is invalid or not.
      *
      * @param robot The robot to check.
      *
-     * @return True if and only if the given robot is effective.
+     * @return True if and only if the given robot is not effective.
      */
-    public static boolean isValidRobot(Robot robot) {
-        return robot != null;
+    public static boolean isInvalidRobot(Robot robot) {
+        return robot == null;
     }
 
     /**
-     * Checks whether or not the given grid is valid or not.
+     * Checks whether or not the given grid is invalid or not.
      *
      * @param grid The grid to check.
      *
-     * @return True if and only if the given grid is effective.
+     * @return True if and only if the given grid is not effective.
      */
-    public static boolean isValidGrid(Grid grid) {
-        return grid != null;
+    public static boolean isInvalidGrid(Grid grid) {
+        return grid == null;
     }
 
     /**
@@ -98,20 +107,54 @@ public class Level implements GameWorld, HistoryTracked {
     }
 
     /**
+     * Check if the robot has a wall in front of him.
+     *
+     * @return True if and only if the cell in the grid in front of the robot has
+     *         the cell type wall, or if no cell is in front of the robot. False
+     *         in all other cases.
+     */
+    public boolean robotHasWallInFront() {
+        try {
+            return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
+        }
+        catch (IndexOutOfBoundsException ignore) {
+            return true;
+        }
+    }
+
+
+    /**
      * Execute the given action with this level.
      *
      * @param action The action to execute.
      *
-     * @effect A backup is made of this level.
      * @effect The given action is executed with this level.
      *
      * @return The last result after the action has been executed.
+     *
+     * @throws IllegalStateException
+     *         If the current result of the grid may not be executed anymore.
      */
     @Override
-    public Result executeAction(Action action) {
-        backup();
+    public Result executeAction(Action action) throws IllegalStateException {
+        if (mayNotDoAction(grid.resultingCondition(robot.getGridPosition()))) {
+            throw new IllegalStateException("No more actions should be executed!");
+        }
         action.execute(this);
         return grid.resultingCondition(robot.getGridPosition());
+    }
+
+    /**
+     * Check whether or not an action may be done based on the
+     * given result.
+     *
+     * @param result The result to check if an action should be done.
+     *
+     * @return True if and only if the given result is not the failure
+     *         result or end result.
+     */
+    public boolean mayNotDoAction(Result result) {
+        return result == Result.FAILURE || result == Result.END;
     }
 
     /**
@@ -126,18 +169,15 @@ public class Level implements GameWorld, HistoryTracked {
         return predicate.evaluate(this);
     }
 
+
     /**
      * Create a new snapshot of this level.
-     *
-     * @effect The name and creation time of the snapshot to return are printed.
      *
      * @return A new snapshot based on this level.
      */
     @Override
     public Snapshot createSnapshot() {
-        LevelSnapshot toReturn = new LevelSnapshot();
-        System.out.println("Creating new Snapshot: " + toReturn.getName() + "@" + toReturn.getSnapshotDate());
-        return toReturn;
+        return new LevelSnapshot();
     }
 
     /**
@@ -156,16 +196,17 @@ public class Level implements GameWorld, HistoryTracked {
     @Override
     public void loadSnapshot(Snapshot snapshot) throws IllegalArgumentException {
         LevelSnapshot memento = (LevelSnapshot) snapshot;
-        if (!isValidRobot(memento.mementoRobot)) {
+        if (isInvalidRobot(memento.mementoRobot)) {
             throw new IllegalArgumentException("The given snapshot doesn't have a valid robot!");
         }
-        if (!isValidGrid(memento.mementoGrid)) {
+        if (isInvalidGrid(memento.mementoGrid)) {
             throw new IllegalArgumentException("The given snapshot doesn't have a valid robot!");
         }
         this.grid = memento.mementoGrid;
         this.robot = memento.mementoRobot;
     }
 
+    // TODO remove from level (backup ...)
     /**
      * Make a backup of this level.
      *
@@ -206,6 +247,7 @@ public class Level implements GameWorld, HistoryTracked {
         history.reset();
     }
 
+
     /**
      * Paint this level.
      *
@@ -226,25 +268,9 @@ public class Level implements GameWorld, HistoryTracked {
      */
     @Override
     public String toString() {
-        return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - " +
-                "Grid: " + grid;
+        return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - Grid: " + grid;
     }
 
-    /**
-     * Check if the robot has a wall in front of him.
-     *
-     * @return True if and only if the cell in the grid in front of the robot has
-     *         the cell type wall, or if no cell is in front of the robot. False
-     *         in all other cases.
-     */
-    public boolean robotHasWallInFront() {
-        try {
-            return grid.getCellAt(robot.getPositionForward()).getCellType() == CellType.WALL;
-        }
-        catch (IndexOutOfBoundsException ignore) {
-            return true;
-        }
-    }
 
     /**
      * A private class for snapshots of a level.
@@ -272,8 +298,7 @@ public class Level implements GameWorld, HistoryTracked {
          */
         @Override
         public String getName() {
-            return "Robot: " + mementoRobot.getGridPosition() + " " + mementoRobot.getDirection() + " - " +
-                    "Grid: " + mementoGrid;
+            return "Robot: " + mementoRobot.getGridPosition() + " " + mementoRobot.getDirection() + " - Grid: " + mementoGrid;
         }
 
         /**
