@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  *
  * @author Alpha-team
  */
-public class Level implements GameWorld, HistoryTracked {
+public class Level implements GameWorld {
 
     /**
      * Variable referring to the robot in this level.
@@ -34,11 +34,7 @@ public class Level implements GameWorld, HistoryTracked {
     /**
      * Variable referring to the level painter of this level.
      */
-    private final LevelPainter levelPainter;
-
-
-    // TODO remove history
-    private final GenericHistory history = new GenericHistory(this);
+    private final LevelPainter levelPainter = new LevelPainter(null);
 
 
     /**
@@ -72,7 +68,6 @@ public class Level implements GameWorld, HistoryTracked {
         }
         this.robot = robot;
         this.grid = grid;
-        this.levelPainter = new LevelPainter(null);
     }
 
     /**
@@ -101,8 +96,14 @@ public class Level implements GameWorld, HistoryTracked {
      * Get the robot of this level
      *
      * @return The robot of this level.
+     *
+     * @throws IllegalStateException
+     *         If no action should be done anymore, thus assuring that the robot can't be changed anymore.
      */
-    public Robot getRobot() {
+    public Robot getRobot() throws IllegalStateException {
+        if (mayNotDoAction()) {
+            throw new IllegalStateException("No action may be done and the robot shouldn't be changed anymore!");
+        }
         return robot;
     }
 
@@ -122,6 +123,16 @@ public class Level implements GameWorld, HistoryTracked {
         }
     }
 
+    /**
+     * Check whether or not an action may be done.
+     *
+     * @return True if and only if the resulting condition of the robot
+     *         position in the grid is not the failure or end result.
+     */
+    public boolean mayNotDoAction() {
+        Result result = grid.resultingCondition(robot.getGridPosition());
+        return result == Result.FAILURE || result == Result.END;
+    }
 
     /**
      * Execute the given action with this level.
@@ -137,24 +148,11 @@ public class Level implements GameWorld, HistoryTracked {
      */
     @Override
     public Result executeAction(Action action) throws IllegalStateException {
-        if (mayNotDoAction(grid.resultingCondition(robot.getGridPosition()))) {
+        if (mayNotDoAction()) {
             throw new IllegalStateException("No more actions should be executed!");
         }
         action.execute(this);
         return grid.resultingCondition(robot.getGridPosition());
-    }
-
-    /**
-     * Check whether or not an action may be done based on the
-     * given result.
-     *
-     * @param result The result to check if an action should be done.
-     *
-     * @return True if and only if the given result is not the failure
-     *         result or end result.
-     */
-    public boolean mayNotDoAction(Result result) {
-        return result == Result.FAILURE || result == Result.END;
     }
 
     /**
@@ -168,7 +166,6 @@ public class Level implements GameWorld, HistoryTracked {
     public boolean evaluatePredicate(Predicate predicate) {
         return predicate.evaluate(this);
     }
-
 
     /**
      * Create a new snapshot of this level.
@@ -206,48 +203,6 @@ public class Level implements GameWorld, HistoryTracked {
         this.robot = memento.mementoRobot;
     }
 
-    // TODO remove from level (backup ...)
-    /**
-     * Make a backup of this level.
-     *
-     * @effect create a new snapshot and add it to the history.
-     */
-    @Override
-    public void backup() {
-        history.add(createSnapshot());
-    }
-
-    /**
-     * Undo this level.
-     *
-     * @effect The history of this level is undone.
-     */
-    @Override
-    public void undo() {
-        history.undo();
-    }
-
-    /**
-     * Redo this level.
-     *
-     * @effect The history of this level is redone.
-     */
-    @Override
-    public void redo() {
-        history.redo();
-    }
-
-    /**
-     * Reset this level.
-     *
-     * @effect The history of this level is reset.
-     */
-    @Override
-    public void reset() {
-        history.reset();
-    }
-
-
     /**
      * Paint this level.
      *
@@ -259,18 +214,6 @@ public class Level implements GameWorld, HistoryTracked {
     public void paint(Graphics g) {
         levelPainter.paint(g, grid, robot);
     }
-
-    /**
-     * Give a string representation of this level.
-     *
-     * @return First the robot of this level with it's position and direction, followed
-     *         by the grid.
-     */
-    @Override
-    public String toString() {
-        return "Robot: " + robot.getGridPosition() + " " + robot.getDirection() + " - Grid: " + grid;
-    }
-
 
     /**
      * A private class for snapshots of a level.

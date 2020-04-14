@@ -62,6 +62,7 @@ class MoveForwardActionTest {
             }
         }
         cellsUp[xUp][yUp] = new Cell(CellType.BLANK);
+        cellsUp[robotUp.getPositionForward().getX()][robotUp.getPositionForward().getY()] = new Cell(CellType.BLANK);
 
         cellsDown = new Cell[width][height];
         for (int w = 0; w < width; w++) {
@@ -70,6 +71,7 @@ class MoveForwardActionTest {
             }
         }
         cellsDown[xDown][yDown] = new Cell(CellType.BLANK);
+        cellsDown[robotDown.getPositionForward().getX()][robotDown.getPositionForward().getY()] = new Cell(CellType.BLANK);
 
         cellsLeft = new Cell[width][height];
         for (int w = 0; w < width; w++) {
@@ -78,6 +80,7 @@ class MoveForwardActionTest {
             }
         }
         cellsLeft[xLeft][yLeft] = new Cell(CellType.BLANK);
+        cellsLeft[robotLeft.getPositionForward().getX()][robotLeft.getPositionForward().getY()] = new Cell(CellType.BLANK);
 
         cellsRight = new Cell[width][height];
         for (int w = 0; w < width; w++) {
@@ -86,6 +89,7 @@ class MoveForwardActionTest {
             }
         }
         cellsRight[xRight][yRight] = new Cell(CellType.BLANK);
+        cellsRight[robotRight.getPositionForward().getX()][robotRight.getPositionForward().getY()] = new Cell(CellType.BLANK);
 
         gridUp = new Grid(cellsUp);
         gridDown = new Grid(cellsDown);
