@@ -1,7 +1,5 @@
 package GameWorld;
 
-import GameWorld.History.GenericHistory;
-import GameWorld.History.HistoryTracked;
 import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
