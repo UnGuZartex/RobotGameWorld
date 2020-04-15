@@ -1,7 +1,7 @@
 package GameWorld.Painter;
 
 import GameWorld.Grid;
-import GameWorldAPI.Images.ImageLibrary;
+import Images.ImageLibrary;
 import RobotCollection.Robot.Robot;
 import RobotCollection.Utility.GridPosition;
 
@@ -9,16 +9,12 @@ import java.awt.*;
 
 public class LevelPainter {
 
-    private final ImageLibrary library;
     private GridPosition gridSize;
     private int cellSize;
     private int gridStartingPointX;
     private int gridStartingPointY;
     private static int minGridDelta = 20;
 
-    public LevelPainter(ImageLibrary library) {
-        this.library = library;
-    }
 
     public void calculateGridProperties(GridPosition startingPosition, GridPosition visualSize, GridPosition gridSize) {
         this.gridSize = gridSize;
@@ -27,12 +23,12 @@ public class LevelPainter {
         gridStartingPointY = startingPosition.getY() + (visualSize.getY() - (cellSize * gridSize.getY())) / 2;
     }
 
-    public void paint(Graphics g, Grid grid, Robot robot) {
-        drawGrid(g, grid);
-        drawRobot(g, robot);
+    public void paint(Graphics g, Grid grid, Robot robot, ImageLibrary library) {
+        drawGrid(g, grid, library);
+        drawRobot(g, robot, library);
     }
 
-    private void drawGrid(Graphics g, Grid grid) {
+    private void drawGrid(Graphics g, Grid grid, ImageLibrary library) {
         g.setColor(Color.black);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
@@ -48,7 +44,7 @@ public class LevelPainter {
         g2.setStroke(new BasicStroke(1));
     }
 
-    private void drawRobot(Graphics g, Robot robot) {
+    private void drawRobot(Graphics g, Robot robot, ImageLibrary library) {
         GridPosition robotPosition = robot.getGridPosition();
         g.drawImage(library.getImage("robot" + robot.getDirection()),
                 gridStartingPointX + robotPosition.getX() * cellSize, gridStartingPointY +

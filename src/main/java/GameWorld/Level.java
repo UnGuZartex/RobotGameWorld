@@ -4,7 +4,7 @@ import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
-import GameWorldAPI.PaintTools.ImageLibrary;
+import Images.ImageLibrary;
 import RobotCollection.Robot.Robot;
 
 import java.awt.Graphics;
@@ -33,7 +33,7 @@ public class Level implements GameWorld {
     /**
      * Variable referring to the level painter of this level.
      */
-    private final LevelPainter levelPainter = new LevelPainter(null);
+    private final LevelPainter levelPainter = new LevelPainter();
 
 
     /**
@@ -211,7 +211,7 @@ public class Level implements GameWorld {
      */
     @Override
     public void paint(Graphics g, ImageLibrary library) {
-        levelPainter.paint(g, grid, robot);
+        levelPainter.paint(g, grid, robot, library);
     }
 
     /**
