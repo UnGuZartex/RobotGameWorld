@@ -6,9 +6,6 @@ import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.Actions.TurnRightAction;
 import GameWorldUtility.Predicates.WallInFrontPredicate;
-import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Direction;
-import RobotCollection.Utility.GridPosition;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ public class LevelInitializer implements GameWorldType {
      * Variable referring to the level loader for this level initializer.
      */
     private final LevelLoader levelLoader = new LevelLoader();
+
     /**
      * Variable referring to the actions possible. This is a list with
      * 3 different actions: move forward, turn left and turn right.
@@ -39,6 +37,7 @@ public class LevelInitializer implements GameWorldType {
                     new TurnRightAction()
             )
     );
+
     /**
      * Variable referring to the predicates possible. This is a list with
      * only one predicate: wall in front.
@@ -50,7 +49,7 @@ public class LevelInitializer implements GameWorldType {
     );
 
     /**
-     * Get all the actions possible.
+     * Get all the possible actions.
      *
      * @return A copy of the actions list.
      */
@@ -60,7 +59,7 @@ public class LevelInitializer implements GameWorldType {
     }
 
     /**
-     * Get all predicates possible.
+     * Get all possible predicates.
      *
      * @return A copy of the predicates list.
      */

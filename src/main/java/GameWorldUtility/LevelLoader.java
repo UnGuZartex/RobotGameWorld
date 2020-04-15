@@ -5,7 +5,7 @@ import GameWorld.CellType;
 import GameWorld.Grid;
 import GameWorld.Level;
 import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Direction;
+import RobotCollection.Robot.Direction;
 import RobotCollection.Utility.GridPosition;
 
 /**

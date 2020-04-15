@@ -1,6 +1,5 @@
 package RobotCollection.Robot;
 
-import RobotCollection.Utility.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

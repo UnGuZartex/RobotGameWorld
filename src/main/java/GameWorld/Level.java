@@ -206,6 +206,7 @@ public class Level implements GameWorld {
      * Paint this level.
      *
      * @param g The graphics to paint this level with.
+     * @param library The image library containing the drawn images.
      *
      * @effect Paints this level, grid and robot using the level painter.
      */

@@ -9,7 +9,7 @@ import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.Actions.TurnRightAction;
 import GameWorldUtility.Predicates.WallInFrontPredicate;
 import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Direction;
+import RobotCollection.Robot.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

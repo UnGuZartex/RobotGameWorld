@@ -1,4 +1,6 @@
-package RobotCollection.Utility;
+package RobotCollection.Robot;
+
+import RobotCollection.Utility.GridPosition;
 
 /**
  * An enum for managing the different directions a robot can look towards.

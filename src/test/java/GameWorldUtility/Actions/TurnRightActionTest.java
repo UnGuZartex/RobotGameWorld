@@ -6,7 +6,7 @@ import GameWorld.Grid;
 import GameWorld.Level;
 import GameWorldAPI.GameWorldType.Action;
 import RobotCollection.Robot.Robot;
-import RobotCollection.Utility.Direction;
+import RobotCollection.Robot.Direction;
 import RobotCollection.Utility.GridPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

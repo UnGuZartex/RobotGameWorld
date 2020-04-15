@@ -15,15 +15,17 @@ public class LevelPainter {
     private int gridStartingPointY;
     private static int minGridDelta = 20;
 
+    public void calculateGridProperties(Graphics g, GridPosition gridSize) {
 
-    public void calculateGridProperties(GridPosition startingPosition, GridPosition visualSize, GridPosition gridSize) {
         this.gridSize = gridSize;
-        cellSize = Math.min((visualSize.getX() - minGridDelta) / gridSize.getX(), (visualSize.getY() - minGridDelta) / gridSize.getY());
-        gridStartingPointX = startingPosition.getX() + (visualSize.getX() - (cellSize * gridSize.getX())) / 2;
-        gridStartingPointY = startingPosition.getY() + (visualSize.getY() - (cellSize * gridSize.getY())) / 2;
+        //cellSize = Math.min((g.getClipBounds().getX() - minGridDelta) / gridSize.getX(), (visualSize.getY() - minGridDelta) / gridSize.getY());
+        //gridStartingPointX = startingPosition.getX() + (visualSize.getX() - (cellSize * gridSize.getX())) / 2;
+        //gridStartingPointY = startingPosition.getY() + (visualSize.getY() - (cellSize * gridSize.getY())) / 2;
     }
 
     public void paint(Graphics g, Grid grid, Robot robot, ImageLibrary library) {
+        // TODO
+        calculateGridProperties(g, null);
         drawGrid(g, grid, library);
         drawRobot(g, robot, library);
     }

@@ -1,7 +1,6 @@
 package RobotCollection.Robot;
 
 import RobotCollection.Utility.GridPosition;
-import RobotCollection.Utility.Direction;
 
 /**
  * A class representing a robot. This has coordinates and a direction.
