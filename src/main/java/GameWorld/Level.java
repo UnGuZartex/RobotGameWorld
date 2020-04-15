@@ -4,6 +4,7 @@ import GameWorld.Painter.LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
+import GameWorldAPI.PaintTools.ImageLibrary;
 import RobotCollection.Robot.Robot;
 
 import java.awt.Graphics;
@@ -209,7 +210,7 @@ public class Level implements GameWorld {
      * @effect Paints this level, grid and robot using the level painter.
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g, ImageLibrary library) {
         levelPainter.paint(g, grid, robot);
     }
 
