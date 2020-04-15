@@ -1,7 +1,7 @@
-package Utility;
+package RobotCollection.Utility;
 
 /**
- * An enum for the different directions a robot can look towards.
+ * An enum for managing the different directions a robot can look towards.
  *
  * @author Alpha-team
  */
@@ -26,6 +26,18 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.RIGHT;
         }
+
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
+        @Override
+        public GridPosition getForwardPosition(GridPosition position) {
+            return new GridPosition(position.getX(), position.getY()-1);
+        }
     },
     LEFT {
         /**
@@ -46,6 +58,18 @@ public enum Direction {
         @Override
         public Direction turnRight() {
             return Direction.UP;
+        }
+
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
+        @Override
+        public GridPosition getForwardPosition(GridPosition position) {
+            return new GridPosition(position.getX()-1, position.getY());
         }
     },
     DOWN {
@@ -68,6 +92,18 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.LEFT;
         }
+
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
+        @Override
+        public GridPosition getForwardPosition(GridPosition position) {
+            return new GridPosition(position.getX(), position.getY()+1);
+        }
     },
     RIGHT {
         /**
@@ -89,6 +125,18 @@ public enum Direction {
         public Direction turnRight() {
             return Direction.DOWN;
         }
+
+        /**
+         * Get the position from moving one tile forward in the
+         * current direction.
+         *
+         * @param position the position to start from
+         * @return The position to end at
+         */
+        @Override
+        public GridPosition getForwardPosition(GridPosition position) {
+            return new GridPosition(position.getX()+1, position.getY());
+        }
     };
 
     /**
@@ -104,4 +152,14 @@ public enum Direction {
      * @return This direction to the right.
      */
     public abstract Direction turnRight();
+
+    /**
+     * Get the position from moving one tile forward in the
+     * current direction.
+     *
+     * @param position the position to start from
+     * @return The position to end at
+     */
+
+    public abstract GridPosition getForwardPosition(GridPosition position);
 }
