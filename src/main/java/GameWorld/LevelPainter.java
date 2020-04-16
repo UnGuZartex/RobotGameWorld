@@ -40,18 +40,18 @@ public class LevelPainter {
      * using the graphics object to draw and the image library for its images.
      *
      * @param g The given graphics object.
+     @param library The given image library.
      * @param grid The given grid.
      * @param robot The given robot.
-     * @param library The given image library.
      *
      * @effect The grid properties are calculated.
      * @effect The grid is drawn.
      * @effect The robot is drawn.
      */
-    public void paint(Graphics g, Grid grid, Robot robot, ImageLibrary library) {
+    public void paint(Graphics g, ImageLibrary library, Grid grid, Robot robot) {
         calculateGridProperties(g, grid.getWidth(), grid.getHeight());
-        drawGrid(g, grid, library);
-        drawRobot(g, robot, library);
+        drawGrid(g, library, grid);
+        drawRobot(g, library, robot);
     }
 
     /**
@@ -77,12 +77,12 @@ public class LevelPainter {
      * and image library.
      *
      * @param g The given graphics object.
-     * @param grid The given grid.
      * @param library The given image library.
+     * @param grid The given grid.
      *
      * @effect Each cell in the grid is drawn at the right coordinates and image.
      */
-    private void drawGrid(Graphics g, Grid grid, ImageLibrary library) {
+    private void drawGrid(Graphics g, ImageLibrary library, Grid grid) {
         g.setColor(Color.black);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
@@ -103,12 +103,12 @@ public class LevelPainter {
      * and image library.
      *
      * @param g The given graphics object.
-     * @param robot The given robot.
      * @param library The given image library.
+     * @param robot The given robot.
      *
      * @effect The robot is drawn inside the grid at its current grid position.
      */
-    private void drawRobot(Graphics g, Robot robot, ImageLibrary library) {
+    private void drawRobot(Graphics g, ImageLibrary library, Robot robot) {
         GridPosition robotPosition = robot.getGridPosition();
         g.drawImage(library.getImage("robot" + robot.getDirection()),
                 gridStartingPointX + robotPosition.getX() * cellSize, gridStartingPointY +

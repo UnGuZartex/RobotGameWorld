@@ -1,6 +1,5 @@
 package GameWorld;
 
-import LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
@@ -212,7 +211,7 @@ public class Level implements GameWorld {
      */
     @Override
     public void paint(Graphics g, ImageLibrary library) {
-        levelPainter.paint(g, grid, robot, library);
+        levelPainter.paint(g, library, grid, robot);
     }
 
     /**
