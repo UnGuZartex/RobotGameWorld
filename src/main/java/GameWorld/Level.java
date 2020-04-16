@@ -1,6 +1,6 @@
 package GameWorld;
 
-import GameWorld.Painter.LevelPainter;
+import LevelPainter;
 import GameWorldAPI.GameWorld.*;
 import GameWorldAPI.GameWorldType.*;
 import GameWorldAPI.History.*;
