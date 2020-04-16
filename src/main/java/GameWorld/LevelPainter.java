@@ -8,7 +8,7 @@ import RobotCollection.Utility.GridPosition;
 import java.awt.*;
 
 /**
- * A class painting levels.
+ * A class for painting levels.
  *
  * @author Alpha-team
  */
