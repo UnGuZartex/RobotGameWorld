@@ -43,7 +43,7 @@ public class LevelPainter {
      * @param grid The given grid.
      * @param robot The given robot.
      * @param library The given image library.
-     *x
+     *
      * @effect The grid properties are calculated.
      * @effect The grid is drawn.
      * @effect The robot is drawn.
