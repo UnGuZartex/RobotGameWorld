@@ -40,7 +40,7 @@ public class LevelPainter {
      * using the graphics object to draw and the image library for its images.
      *
      * @param g The given graphics object.
-     @param library The given image library.
+     * @param library The given image library.
      * @param grid The given grid.
      * @param robot The given robot.
      *
