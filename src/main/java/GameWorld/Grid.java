@@ -99,6 +99,24 @@ public class Grid {
     }
 
     /**
+     * Return the height of this grid.
+     *
+     * @return the height of this grid.
+     */
+    public int getHeight() {
+        return cells.length;
+    }
+
+    /**
+     * Return the width of this grid.
+     *
+     * @return the width of this grid.
+     */
+    public int getWidth() {
+        return cells[0].length;
+    }
+
+    /**
      * Check whether or not given robot coordinates and grid are valid.
      *
      * @param position the position of the Robot
