@@ -54,6 +54,17 @@ public class LevelPainter {
         drawRobot(g, robot, library);
     }
 
+    /**
+     * Calculate the variables used to draw the grid with a given graphics object,
+     * grid width and grid height.
+     *
+     * @param g The given graphics object.
+     * @param gridWidth The given grid width.
+     * @param gridHeight The given grid height.
+     *
+     * @effect The visual cell size is calculated properly.
+     * @effect The starting coordinates of the drawn grid are calculated properly.
+     */
     private void calculateGridProperties(Graphics g, int gridWidth, int gridHeight) {
         Rectangle clipRect = g.getClipBounds();
         cellSize = (int) Math.min((clipRect.getWidth() - minGridDelta) / gridWidth, (clipRect.getHeight() - minGridDelta) / gridHeight);
