@@ -1,4 +1,6 @@
-package RobotCollection.Utility;
+package RobotCollection.Robot;
+
+import RobotCollection.Utility.GridPosition;
 
 /**
  * An enum for managing the different directions a robot can look towards.
@@ -35,7 +37,7 @@ public enum Direction {
          * @return The position to end at
          */
         @Override
-        public GridPosition getForwardPosition(GridPosition position) {
+        public GridPosition getPositionForward(GridPosition position) {
             return new GridPosition(position.getX(), position.getY()-1);
         }
     },
@@ -68,7 +70,7 @@ public enum Direction {
          * @return The position to end at
          */
         @Override
-        public GridPosition getForwardPosition(GridPosition position) {
+        public GridPosition getPositionForward(GridPosition position) {
             return new GridPosition(position.getX()-1, position.getY());
         }
     },
@@ -101,7 +103,7 @@ public enum Direction {
          * @return The position to end at
          */
         @Override
-        public GridPosition getForwardPosition(GridPosition position) {
+        public GridPosition getPositionForward(GridPosition position) {
             return new GridPosition(position.getX(), position.getY()+1);
         }
     },
@@ -134,7 +136,7 @@ public enum Direction {
          * @return The position to end at
          */
         @Override
-        public GridPosition getForwardPosition(GridPosition position) {
+        public GridPosition getPositionForward(GridPosition position) {
             return new GridPosition(position.getX()+1, position.getY());
         }
     };
@@ -161,5 +163,5 @@ public enum Direction {
      * @return The position to end at
      */
 
-    public abstract GridPosition getForwardPosition(GridPosition position);
+    public abstract GridPosition getPositionForward(GridPosition position);
 }

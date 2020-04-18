@@ -2,136 +2,67 @@ package GameWorld;
 
 import GameWorldAPI.GameWorld.Result;
 import RobotCollection.Utility.GridPosition;
-import GameWorldAPI.History.Snapshot;
 
 /**
  * A class to keep track of the grid of the game. This is
  * a matrix of cells.
  *
- * @invar A grid must have proper dimensions.
- *        | areProperDimensions(getWidth(), getHeight(), getCells())
+ * @invar A grid must have valid cells
+ *        | areValidCells(cells)
  *
  * @author Alpha-team
  */
 public class Grid {
 
     /**
-     * Variable referring to the height of this grid.
-     */
-    private int height;
-    /**
-     * Variable referring to the width of this grid.
-     */
-    private int width;
-    /**
      * Variable referring to the cells in this grid.
      */
     private Cell[][] cells;
-
-    /**
-     * Initialise a new grid with given height and width.
-     *
-     * @param width The width of this grid.
-     * @param height The height of this grid.
-     *
-     * @post A new grid is initialised with the given width and
-     *       height. All the cells of this grid are set to the
-     *       default cell for a grid.
-     */
-    public Grid(int width, int height) {
-        this(width, height, new Cell[width][height]);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                cells[i][j] = getDefaultCell();
-            }
-        }
-    }
 
     /**
      * Initialise a new grid with given cells.
      *
      * @param cells The cells for this Grid.
      *
-     * @post A new grid is initialised with the given cells and
-     *       the height and width of this grid is set to the the
-     *       dimensions of the given cells.
-     *
-     * @effect Calls constructor with given cells and its dimensions.
-     */
-    public Grid(Cell[][] cells) {
-        this(cells.length, cells[0].length, cells);
-    }
-
-    public Grid(Grid grid) {
-        width = grid.width;
-        height = grid.height;
-        cells = new Cell[width][height];
-
-        for (int x = 0; x < grid.cells.length; x++) {
-            for (int y = 0; y < grid.cells[x].length; y++) {
-                cells[x][y] = new Cell(grid.cells[x][y]);
-            }
-        }
-    }
-
-    /**
-     * Initialise a new grid with given width, height and cells.
-     *
-     * @param width The width of this grid.
-     * @param height The height of this grid.
-     * @param cells The cells for this Grid.
-     *
-     * @pre The given width and height should correspond to the
-     *      dimensions of the given cells.
-     *
-     * @post The properties of this grid are set to the given
-     *       parameters.
+     * @post The cells of this grid are set to the given cells only
+     *       if these are valid.
      *
      * @throws IllegalArgumentException
-     *         When the given arguments are none valid dimensions.
+     *         If the given cells are not valid for a grid.
      */
-    protected Grid(int width, int height, Cell[][] cells) throws IllegalArgumentException{
-        if (!areProperDimensions(width, height, cells)) {
-            throw new IllegalArgumentException("The given dimensions are invalid");
+    public Grid(Cell[][] cells) throws IllegalArgumentException {
+        if (areValidCells(cells)) {
+            this.cells = cells;
+        } else {
+            throw new IllegalArgumentException("The given cells are invalid for a grid!");
         }
-        this.height = height;
-        this.width = width;
-        this.cells = cells;
     }
 
     /**
-     * Checks whether or not the given parameters are valid dimensions.
+     * Get a copy of this grid.
      *
-     * @param width The width to check.
-     * @param height The height to check.
+     * @return A new grid with cells equal to this grid but copied.
+     */
+    public Grid copy() {
+        Cell[][] copy = new Cell[cells.length][cells[0].length];
+        for (int x = 0; x < copy.length; x++) {
+            for (int y = 0; y < copy[x].length; y++) {
+                copy[x][y] = cells[x][y].copy();
+            }
+        }
+        return new Grid(copy);
+    }
+
+    /**
+     * Check whether or not the given cells are valid for a grid.
+     *
      * @param cells The cells to check.
      *
-     * @return True if and only if the given width and height are greater
-     *         than 0, and the dimensions of the given cells correspond to
-     *         the given width and height.
+     * @return True if and only if the given cells are effective and both the height
+     *         and width are greater than 0, false in all other cases.
      */
-    public static boolean areProperDimensions(int width, int height, Cell[][] cells) {
-        return width > 0 && height > 0 &&
-                cells.length == width &&
-                cells[0].length == height;
-    }
-
-    /**
-     * Get the height of this grid.
-     *
-     * @return The height of this grid.
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * Get the width of this grid.
-     *
-     * @return The width of this grid.
-     */
-    public int getWidth() {
-        return width;
+    public static boolean areValidCells(Cell[][] cells) {
+        return cells != null && cells.length > 0 && cells[0].length > 0;
     }
 
     /**
@@ -139,31 +70,50 @@ public class Grid {
      *
      * @param position the Position to get the cell of
      *
-     * @pre The given index must be both greater than 0 and x must
-     *      be smaller than width and y must be smaller than height.
-     *
      * @return The cell in this grid at position [x,y] coordinate.
+     *
+     * @throws IndexOutOfBoundsException
+     *         If the given position is not inside of this grid.
      */
-    public Cell getCellAt(GridPosition position) {
+    public Cell getCellAt(GridPosition position) throws IndexOutOfBoundsException {
         return cells[position.getX()][position.getY()];
     }
 
     /**
-     * Get the cells of this grid.
+     * Get the result based on the given position.
      *
-     * @return A clone of the cells in this grid.
+     * @param position The position to base the result on.
+     *
+     * @return If the given position is not walkable in this grid, then a failure
+     *         result is returned. If the given position is winning, then is an
+     *         ending result returned. In all other cases is a success result returned.
      */
-    public Cell[][] getCells() {
-        return cells.clone();
+    public Result resultingCondition(GridPosition position) {
+        if (!isWalkablePosition(position)) {
+            return Result.FAILURE;
+        }
+        if (isWinningPosition(position)) {
+            return Result.END;
+        }
+        return Result.SUCCESS;
     }
 
     /**
-     * Get the default Cell for a grid.
+     * Return the height of this grid.
      *
-     * @return A new Cell with BLANK CellType.
+     * @return the height of this grid.
      */
-    public static Cell getDefaultCell() {
-        return new Cell(CellType.BLANK);
+    public int getHeight() {
+        return cells.length;
+    }
+
+    /**
+     * Return the width of this grid.
+     *
+     * @return the width of this grid.
+     */
+    public int getWidth() {
+        return cells[0].length;
     }
 
     /**
@@ -171,36 +121,28 @@ public class Grid {
      *
      * @param position the position of the Robot
      *
-     * @return True if and only if the given coordinates are smaller than
-     *         the dimensions of the cells and greater than 0 and the given
-     *         coordinates correspond to a cell in the given cells which has
-     *         a walkable CellType.
+     * @return True if and only if the given position is of a cell in this grid
+     *         with a cell type on which can be walked. Otherwise false is returned.
      */
-    public boolean isValidRobotPositionInCells(GridPosition position) {
-        return position.getX() < cells.length && position.getX() >= 0 &&
-                position.getY() < cells[0].length && position.getY() >= 0 &&
-                cells[position.getX()][position.getY()].getCellType().canWalkOn();
+    public boolean isWalkablePosition(GridPosition position) {
+        try {
+            return getCellAt(position).getCellType().canWalkOn();
+        } catch (IndexOutOfBoundsException ignore) {
+            return false;
+        }
     }
 
     /**
      * Checks whether or not the level has been won.
      *
-     * @return True if and only if the robot's position corresponds
-     *         to a cell which with CellType which is win.
+     * @return True if and only if the given position is of a cell in this grid
+     *         with a cell type which is winning. Otherwise false is returned.
      */
-    public boolean hasWon(GridPosition position) {
-        return getCellAt(position).getCellType().isWin();
-    }
-
-    public Result resultingCondition(GridPosition currentPosition) {
-        if (isValidRobotPositionInCells(currentPosition)) {
-            if (hasWon(currentPosition)) {
-                return Result.END;
-            }
-            return Result.SUCCESS;
-        }
-        else {
-            return Result.FAILURE;
+    public boolean isWinningPosition(GridPosition position) {
+        try {
+            return getCellAt(position).getCellType().isWin();
+        } catch (IndexOutOfBoundsException ignore) {
+            return false;
         }
     }
 }

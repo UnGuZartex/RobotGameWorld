@@ -26,11 +26,6 @@ public class GridPosition {
         this.y = y;
     }
 
-    public GridPosition(GridPosition gridPosition) {
-        this.x = gridPosition.x;
-        this.y = gridPosition.y;
-    }
-
     /**
      * Get the x-coordinate of this position.
      *
@@ -49,6 +44,21 @@ public class GridPosition {
         return  y;
     }
 
+    /**
+     * Make a copy of this grid position.
+     *
+     * @return A new grid position with equal coordinates to this grid position.
+     */
+    public GridPosition copy() {
+        return new GridPosition(x, y);
+    }
+
+    /**
+     * Give a string representation of this grid position.
+     *
+     * @return The coordinates of this position between brackets and separated with
+     *         a comma, first the x coordinate and then the y coordinate.
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
