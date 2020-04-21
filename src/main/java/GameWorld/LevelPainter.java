@@ -50,6 +50,7 @@ public class LevelPainter {
      */
     public void paint(Graphics g, ImageLibrary library, Grid grid, Robot robot) {
         calculateGridProperties(g, grid.getWidth(), grid.getHeight());
+        drawBackground(g, library);
         drawGrid(g, library, grid);
         drawRobot(g, library, robot);
     }
@@ -70,6 +71,20 @@ public class LevelPainter {
         cellSize = (int) Math.min((clipRect.getWidth() - minGridDelta) / gridWidth, (clipRect.getHeight() - minGridDelta) / gridHeight);
         gridStartingPointX = (int) (clipRect.getX() + (clipRect.getWidth() - (cellSize * gridWidth)) / 2);
         gridStartingPointY = (int) (clipRect.getY() + (clipRect.getHeight() - (cellSize * gridHeight)) / 2);
+    }
+
+    /**
+     * Draw the background of the robot game world.
+     *
+     * @param g The given graphics object.
+     * @param library The given image library.
+     *
+     * @effect The game world background is drawn.
+     */
+    private void drawBackground(Graphics g, ImageLibrary library) {
+        Rectangle clipRect = g.getClipBounds();
+        g.drawImage(library.getImage("gameWorldBackground"), clipRect.x, clipRect.y,
+                clipRect.width, clipRect.height, null);
     }
 
     /**
