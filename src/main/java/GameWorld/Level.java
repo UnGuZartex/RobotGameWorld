@@ -197,8 +197,8 @@ public class Level implements GameWorld {
         if (isInvalidGrid(memento.mementoGrid)) {
             throw new IllegalArgumentException("The given snapshot doesn't have a valid robot!");
         }
-        this.grid = memento.mementoGrid;
-        this.robot = memento.mementoRobot;
+        this.grid = memento.mementoGrid.copy();
+        this.robot = memento.mementoRobot.copy();
     }
 
     /**
@@ -217,7 +217,7 @@ public class Level implements GameWorld {
     /**
      * A private class for snapshots of a level.
      */
-    private class LevelSnapshot implements Snapshot {
+    private final class LevelSnapshot implements Snapshot {
 
         /**
          * Variable referring to the robot to remember.
