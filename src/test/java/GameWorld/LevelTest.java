@@ -3,7 +3,7 @@ package GameWorld;
 import GameWorldAPI.GameWorld.Result;
 import GameWorldAPI.GameWorldType.Action;
 import GameWorldAPI.GameWorldType.Predicate;
-import GameWorldAPI.History.Snapshot;
+import GameWorldAPI.Utility.Snapshot;
 import GameWorldUtility.Actions.MoveForwardAction;
 import GameWorldUtility.Actions.TurnLeftAction;
 import GameWorldUtility.Actions.TurnRightAction;
