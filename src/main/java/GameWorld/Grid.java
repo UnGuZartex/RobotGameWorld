@@ -135,6 +135,8 @@ public class Grid {
     /**
      * Checks whether or not the level has been won.
      *
+     * @param position The position to check if it's a winning position
+     *
      * @return True if and only if the given position is of a cell in this grid
      *         with a cell type which is winning. Otherwise false is returned.
      */
